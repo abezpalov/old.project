@@ -106,7 +106,7 @@
 				</fieldset>
 				<p><a href="/login/restore-password/">Восстановить пароль.</a></p>
 				<button class="button"><i class="fa fa-lock"></i>&nbsp;Войти</button>
-				<button data-do="login-modal-close" class="secondary">Отмена</button>
+				<button data-do="login-modal-cancel" class="secondary">Отмена</button>
 			</form>
 		</div>
 		<div class="content" id="registerPanel">
@@ -136,7 +136,7 @@
 				</fieldset>
 				<p><a href="/login/license/">Лицензионное соглашение.</a></p>
 				<button>Зарегистрироваться</button>
-				<button data-do="login-modal-close" class="secondary">Отмена</button>
+				<button data-do="login-modal-cancel" class="secondary">Отмена</button>
 			</form>
 		</div>
 	</div>
@@ -149,7 +149,7 @@
 		<input type="hidden" name="redirect" value="{{ request.path }}">
 		<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 		<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
-		<button data-do="login-modal-close" class="secondary">Отмена</button>
+		<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
 	</form>
 	<a class="close-reveal-modal">&#215;</a>
 </div>
@@ -168,7 +168,21 @@
 <script src="/static/js/foundation/foundation.topbar.js"></script>
 <script src="/static/js/foundation/foundation.reveal.js"></script>
 <script>
-	$(document).foundation();
+$(document).foundation();
+
+$(document).ready(function(){
+
+	$("body").delegate("button[data-do*='login-modal-cancel']", "click", function(){
+		$('#loginModal').foundation('reveal', 'close');
+		return false;
+	});
+
+	$("body").delegate("button[data-do*='profile-modal-cancel']", "click", function(){
+		$('#profileModal').foundation('reveal', 'close');
+		return false;
+	});
+
+});
 </script>
 {% block js-content %}{% endblock %}
 </body>
