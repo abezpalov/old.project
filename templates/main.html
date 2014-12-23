@@ -14,9 +14,6 @@
 </head>
 <body>
 
-
-
-
 <!-- Логотип -->
 <div class="row hide-for-small-only">
 	<div class="medium-6 large-4 columns"><h1><a href="/">Anodos</a></h1></div>
@@ -75,7 +72,11 @@
 					{% endblock %}
 					<li class="divider"></li>
 					<li class="has-form">
-						<a href="#" data-reveal-id="loginModal" class="button">Войти</a>
+						{% if user.is_authenticated %}
+						<button data-reveal-id="profileModal"><i class="fa fa-user"></i>&nbsp;{{ user.username }}</button>
+						{% else %}
+						<button data-reveal-id="loginModal"><i class="fa fa-lock"></i><span class="hide-for-medium">&nbsp;Войти</span></button>
+						{% endif %}
 					</li>
 				</ul>
 			</section>
@@ -85,69 +86,73 @@
 
 <!-- Модальное окно авторизации -->
 <div id="loginModal" class="reveal-modal large" data-reveal>
-
-<dl class="tabs" data-tab>
-	<dd class="active"><a href="#loginPanel">Войти</a></dd>
-	<dd><a href="#registerPanel">Зарегистрироваться</a></dd>
-</dl>
-<div class="tabs-content">
-	<div class="content active" id="loginPanel">
-		<form action="/login/" method="post">
-			<fieldset>
-				<legend>Войти</legend>
-				<label>Имя пользователя
-					<input name="username" type="text" placeholder="Login">
-				</label>
-				<label>Пароль
-					<input name="password" type="password" placeholder="Password">
-				</label>
-				<input type="hidden" name=​"redirect" value="/">
-				<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-			</fieldset>
-			<p><a href="/login/restore-password/">Восстановить пароль.</a></p>
-			<button class="button">Войти</button>
-		</form>
+	<dl class="tabs" data-tab>
+		<dd class="active"><a href="#loginPanel">Войти</a></dd>
+		<dd><a href="#registerPanel">Зарегистрироваться</a></dd>
+	</dl>
+	<div class="tabs-content">
+		<div class="content active" id="loginPanel">
+			<form action="/login/" method="post">
+				<fieldset>
+					<legend>Войти</legend>
+					<label>Имя пользователя
+						<input name="username" type="text" placeholder="Login">
+					</label>
+					<label>Пароль
+						<input name="password" type="password" placeholder="Password">
+					</label>
+					<input type="hidden" name="redirect" value="{{ request.path }}">
+					<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+				</fieldset>
+				<p><a href="/login/restore-password/">Восстановить пароль.</a></p>
+				<button class="button"><i class="fa fa-lock"></i>&nbsp;Войти</button>
+				<button data-do="login-modal-close" class="secondary">Отмена</button>
+			</form>
+		</div>
+		<div class="content" id="registerPanel">
+			<form action="/login/" method="post">
+				<fieldset>
+					<legend>Зарегистрироваться</legend>
+					<label>Имя пользователя
+						<input name="username" type="text" placeholder="Login">
+					</label>
+					<label>Пароль
+						<input name="password" type="password" placeholder="Password">
+					</label>
+					<label>Повторите пароль
+						<input name="password_double" type="password" placeholder="Password">
+					</label>
+					<label>Электронная почта
+						<input name="email" type="email" placeholder="your@email.ru">
+					</label>
+					<label>Имя
+						<input name="firstname" type="text" placeholder="First Name">
+					</label>
+					<label>Фамилия
+						<input name="lastname" type="text" placeholder="Last Name">
+					</label>
+					<input type="hidden" name="redirect" value="{{ request.path }}">
+					<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+				</fieldset>
+				<p><a href="/login/license/">Лицензионное соглашение.</a></p>
+				<button>Зарегистрироваться</button>
+				<button data-do="login-modal-close" class="secondary">Отмена</button>
+			</form>
+		</div>
 	</div>
-	<div class="content" id="registerPanel">
-		<form action="/login/" method="post">
-			<fieldset>
-				<legend>Зарегистрироваться</legend>
-				<label>Имя пользователя
-					<input name="username" type="text" placeholder="Login">
-				</label>
-				<label>Пароль
-					<input name="password" type="password" placeholder="Password">
-				</label>
-				<label>Повторите пароль
-					<input name="password_double" type="password" placeholder="Password">
-				</label>
-				<label>Электронная почта
-					<input name="email" type="email" placeholder="your@email.ru">
-				</label>
-				<label>Имя
-					<input name="firstname" type="text" placeholder="First Name">
-				</label>
-				<label>Фамилия
-					<input name="lastname" type="text" placeholder="Last Name">
-				</label>
-				<input type="hidden" name=​"redirect" value="/">
-				<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-			</fieldset>
-			<p><a href="/login/license/">Лицензионное соглашение.</a></p>
-			<button class="button">Зарегистрироваться</button>
-		</form>
-	</div>
-</div>
-
-
-
-
-
 	<a class="close-reveal-modal">&#215;</a>
 </div>
 
-
-
+<!-- Модальное окно профиля пользователя -->
+<div id="profileModal" class="reveal-modal large" data-reveal>
+	<form action="/logout/" method="post">
+		<input type="hidden" name="redirect" value="{{ request.path }}">
+		<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+		<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
+		<button data-do="login-modal-close" class="secondary">Отмена</button>
+	</form>
+	<a class="close-reveal-modal">&#215;</a>
+</div>
 
 
 <!-- Крошки -->
