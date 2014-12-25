@@ -43,14 +43,23 @@
 					<li class="has-dropdown">
 						<a href="#">Товары и услуги</a>
 						<ul class="dropdown">
-							<li><a href="/catalog/products/">Каталог товаров</a></li>
+							<li><a href="/catalog/products/">Каталог товаров и услуг</a></li>
+							<li><a href="/catalog/current-order/">Текущий заказ</a></li>
+							{% if user.is_authenticated %}
+							<li><a href="/catalog/orders/">Заказы</a></li>
+							{% endif %}
+							{% if perms.catalog.change_product %}
 							<li class="divider"></li>
-							<li><a href="/catalog/vendors/">Производители</a></li>
-							<li><a href="/catalog/vendor-synonyms/">Синонимы производителей</a></li>
-							<li><a href="/catalog/categories/">Категории</a></li>
-							<li><a href="/catalog/category-synonyms/">Синонимы категорий</a></li>
-							<li><a href="/catalog/updaters/">Загрузчики</a></li>
 							<li><a href="/catalog/price-types/">Типы цен и наценки</a></li>
+							<li><a href="/catalog/currencies/">Валюты и их курсы</a></li>
+							<li><a href="/catalog/categories/">Категории товаров</a></li>
+							<li><a href="/catalog/vendors/">Производители</a></li>
+							<li><a href="/catalog/distributors/">Поставщики</a></li>
+							<li><a href="/catalog/stocks/">Склады</a></li>
+							<li><a href="/catalog/updaters/">Загрузчики</a></li>
+							<li><a href="/catalog/vendor-synonyms/">Синонимы производителей</a></li>
+							<li><a href="/catalog/category-synonyms/">Синонимы категорий</a></li>
+							{% endif %}
 						</ul>
 					</li>
 				</ul>
@@ -110,7 +119,7 @@
 			</form>
 		</div>
 		<div class="content" id="registerPanel">
-			<form action="/login/" method="post">
+			<form action="/register/" method="post">
 				<fieldset>
 					<legend>Зарегистрироваться</legend>
 					<label>Имя пользователя
@@ -145,6 +154,7 @@
 
 <!-- Модальное окно профиля пользователя -->
 <div id="profileModal" class="reveal-modal large" data-reveal>
+	<p>{{ perms.catalog }}</p>
 	<form action="/logout/" method="post">
 		<input type="hidden" name="redirect" value="{{ request.path }}">
 		<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
