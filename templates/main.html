@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{% block title %}Anodos{% endblock %}</title>
 	<link rel="stylesheet" href="/static/css/foundation.css">
-	<link rel="stylesheet" href="/static/css/font-awesome.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/static/css/ns-default.css">
 	<link rel="stylesheet" href="/static/css/ns-style-growl.css">
 	<link rel="stylesheet" href="/static/css/template.css">
@@ -195,6 +195,12 @@ $(document).ready(function(){
 });
 </script>
 {% block js-content %}{% endblock %}
+
+{% block fotorama %}
+<link  href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.3/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.3/fotorama.js"></script> <!-- 16 KB -->
+{% endblock %}
+
 </body>
 </html>
 {% endblock %}
