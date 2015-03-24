@@ -9,7 +9,7 @@ def home(request):
 #	updaters_list = Updater.objects.all()
 	test = 'test'
 	context = {'test': test}
-	return render(request, 'project/home.html', context)
+	return render(request, 'content/home.html', context)
 
 def login_view(request):
 	if request.method == 'POST':

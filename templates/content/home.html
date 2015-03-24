@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+{% block title %}Anodos{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="small-12 columns">
+		<h3>{{ product.name }}</h3>
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-8 medium-6 columns">
+		<div class="fotorama"
+			data-transition="crossfade"
+			data-arrows="true"
+			data-click="false"
+			data-swipe="false"
+			data-trackpad="true">
+			<img src="media/test/1.jpg" data-caption="1">
+			<img src="media/test/2.jpg" data-caption="2">
+			<img src="media/test/3.jpg" data-caption="3">
+			<img src="media/test/4.jpg" data-caption="4">
+			<img src="media/test/5.jpg" data-caption="5">
+			<img src="media/test/6.jpg" data-caption="6">
+			<img src="media/test/7.jpg" data-caption="7">
+			<img src="media/test/8.jpg" data-caption="8">
+		</div>
+		<div>Новости и статьи</div>
+		<div>Новости и статьи</div>
+		<div>Новости и статьи</div>
+		<div>Новости и статьи</div>
+	</div>
+	<div class="large-4 medium-6 columns">
+		<div>Вторичный контент и реклама</div>
+		<div>Вторичный контент и реклама</div>
+		<div>Вторичный контент и реклама</div>
+	</div>
+</div>
+
+{% endblock %}
+{% block js-content %}
+<script>
+{% include "catalog/js/product.js" %}
+</script>
+{% endblock %}
