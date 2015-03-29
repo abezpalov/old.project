@@ -79,13 +79,32 @@ class Content(models.Model):
 	power        = models.IntegerField(default=1)
 
 	created      = models.DateTimeField()
-	created_by   = models.CharField(max_length=100)
+	created_by   = models.CharField(max_length=100, null=True, default=None)
 	modified     = models.DateTimeField()
-	modified_by  = models.CharField(max_length=100)
+	modified_by  = models.CharField(max_length=100, null=True, default=None)
 	published    = models.DateTimeField(null=True, default=None)
-	published_by = models.CharField(max_length=100)
+	published_by = models.CharField(max_length=100, null=True, default=None)
 	pub_from     = models.DateTimeField(null=True, default=None)
 	pub_to       = models.DateTimeField(null=True, default=None)
 
 	def __str__(self):
 		return self.title
+
+# Menu
+class Menu(models.Model):
+	name        = models.CharField(max_length=100)
+	alias       = models.CharField(max_length=100)
+	description = models.TextField()
+	parent      = models.ForeignKey('self', null=True, default=None)
+	level       = models.IntegerField()
+	order       = models.IntegerField()
+	path        = models.CharField(max_length=512, null=True)
+	state       = models.BooleanField(default=True)
+	created     = models.DateTimeField()
+	modified    = models.DateTimeField()
+
+	def __str__(self):
+		return self.name
+
+	class Meta:
+		ordering = ['order']
