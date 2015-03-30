@@ -16,6 +16,7 @@ def login_view(request):
 		username = request.POST.get('username')
 		password = request.POST.get('password')
 		redirect_url = request.POST.get('redirect')
+		if not redirect_url: redirect_url = '/'
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			if user.is_active:
@@ -35,8 +36,18 @@ def login_view(request):
 def logout_view(request):
 	if request.method == 'POST':
 		redirect_url = request.POST.get('redirect')
+		if not redirect_url: redirect_url = '/'
 		logout(request)
 		return redirect(redirect_url)
 	else:
 		return HttpResponse(status=400)
 
+def content_add(request):
+	if request.method == 'POST':
+		redirect_url = request.POST.get('redirect')
+
+		# TODO Добавление статьи
+
+		return redirect(redirect_url)
+	else:
+		return HttpResponse(status=400)

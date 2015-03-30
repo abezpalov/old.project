@@ -26,17 +26,43 @@
 			<img src="media/test/7.jpg" data-caption="7">
 			<img src="media/test/8.jpg" data-caption="8">
 		</div>
-		<div>Новости и статьи</div>
-		<div>Новости и статьи</div>
-		<div>Новости и статьи</div>
-		<div>Новости и статьи</div>
+		<div>Тест: новости и статьи.</div>
+		<div>Тест: новости и статьи.</div>
+		<div>Тест: новости и статьи.</div>
+		<div>Тест: новости и статьи.</div>
+		<div>Тест: новости и статьи.</div>
 	</div>
 	<div class="large-4 medium-6 columns">
-		<div>Вторичный контент и реклама</div>
-		<div>Вторичный контент и реклама</div>
-		<div>Вторичный контент и реклама</div>
+		<div>Тест: вторичный контент и реклама.</div>
+		<div>Тест: вторичный контент и реклама.</div>
+		<div>Тест: вторичный контент и реклама.</div>
+		{% if perms.project.change_content %}
+		<fieldset>
+			<legend>Управление контентом</legend>
+			<button class="small expand"><i class="fa fa-pencil-square-o"></i>&nbsp;Написать статью</button>
+			<button class="small expand"><i class="fa fa-file-o"></i>&nbsp;Добавить файл</button>
+		</fieldset>
+		{% endif %}
 	</div>
 </div>
+
+
+
+{% if perms.project.change_content %}
+<!-- Модальное окно профиля пользователя -->
+<div id="newContentModal" class="reveal-modal large" data-reveal>
+	<form action="/content/add/" method="post">
+		<input type="hidden" name="redirect" value="{{ request.path }}">
+		<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+		<textarea name="">
+		</textarea>
+		<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
+		<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
+	</form>
+	<a class="close-reveal-modal">&#215;</a>
+</div>
+{% endif %}
+
 
 {% endblock %}
 {% block js-content %}

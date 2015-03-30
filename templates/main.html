@@ -62,6 +62,17 @@
 							{% endif %}
 						</ul>
 					</li>
+					{% if perms.project.change_content %}
+					<li class="has-dropdown">
+						<a href="#">Контент</a>
+						<ul class="dropdown">
+							<li><a href="/content/">Документы и статьи</a></li>
+							<li><a href="/content/categories/">Категории</a></li>
+							<li><a href="/content/doc-types/">Типы документов</a></li>
+							<li><a href="/content/languages/">Языки</a></li>
+						</ul>
+					</li>
+					{% endif %}
 				</ul>
 
 				<!-- Поиск и авторизация -->
@@ -93,6 +104,19 @@
 	</div>
 </div>
 
+{% if user.is_authenticated %}
+<!-- Модальное окно профиля пользователя -->
+<div id="profileModal" class="reveal-modal large" data-reveal>
+	<p>{{ perms.catalog }}</p>
+	<form action="/logout/" method="post">
+		<input type="hidden" name="redirect" value="{{ request.path }}">
+		<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+		<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
+		<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
+	</form>
+	<a class="close-reveal-modal">&#215;</a>
+</div>
+{% else %}
 <!-- Модальное окно авторизации -->
 <div id="loginModal" class="reveal-modal large" data-reveal>
 	<dl class="tabs" data-tab>
@@ -151,19 +175,7 @@
 	</div>
 	<a class="close-reveal-modal">&#215;</a>
 </div>
-
-<!-- Модальное окно профиля пользователя -->
-<div id="profileModal" class="reveal-modal large" data-reveal>
-	<p>{{ perms.catalog }}</p>
-	<form action="/logout/" method="post">
-		<input type="hidden" name="redirect" value="{{ request.path }}">
-		<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-		<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
-		<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
-	</form>
-	<a class="close-reveal-modal">&#215;</a>
-</div>
-
+{% endif %}
 
 <!-- Крошки -->
 <div class="row">
