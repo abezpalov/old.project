@@ -39,30 +39,130 @@
 		{% if perms.project.change_content %}
 		<fieldset>
 			<legend>Управление контентом</legend>
-			<button class="small expand"><i class="fa fa-pencil-square-o"></i>&nbsp;Написать статью</button>
-			<button class="small expand"><i class="fa fa-file-o"></i>&nbsp;Добавить файл</button>
+			<button class="small expand" data-reveal-id="editContentModal"><i class="fa fa-pencil-square-o"></i>&nbsp;Написать статью</button>
+			<button class="small expand" data-reveal-id="addContentModal"><i class="fa fa-file-o"></i>&nbsp;Добавить файл</button>
 		</fieldset>
 		{% endif %}
 	</div>
 </div>
 
-
-
 {% if perms.project.change_content %}
-<!-- Модальное окно профиля пользователя -->
-<div id="newContentModal" class="reveal-modal large" data-reveal>
-	<form action="/content/add/" method="post">
-		<input type="hidden" name="redirect" value="{{ request.path }}">
-		<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-		<textarea name="">
-		</textarea>
-		<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
-		<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
-	</form>
+<!-- Модальное редактирования статьи -->
+<div id="editContentModal" class="reveal-modal large" data-reveal>
+	<dl class="tabs" data-tab>
+		<dd class="active"><a href="#headPanel">Заглавие</a></dd>
+		<dd><a href="#contentPanel">Содержимое</a></dd>
+		<dd><a href="#metaPanel">Метаданные</a></dd>
+	</dl>
+	<div class="tabs-content">
+		<div class="content active" id="headPanel">
+
+			<fieldset>
+				<input name="csrfmiddlewaretoken" type="hidden" value="{{ csrf_token }}">
+				<input name="id" type="hidden" value="0">
+				<label>Заголовок
+					<input name="title" type="text">
+				</label>
+				<label>Синоним
+					<input name="alias" type="text">
+				</label>
+				<label>Путь (для формирования URL)
+					<input name="patch" type="text">
+				</label>
+				<label>Прямая ссылка
+					<input name="src" type="text">
+				</label>
+				<label>Прямая ссылка на превью
+					<input name="thumb_src" type="text">
+				</label>
+				<label>Тип документа
+					<input name="doc_type" type="text">
+				</label>
+				<label>Введный текст
+					<textarea name="intro"></textarea>
+				</label>
+				<label>Содержимое
+					<textarea name="content"></textarea>
+				</label>
+				<label>Описание
+					<textarea name="description"></textarea>
+				</label>
+				<label>Код банера на главной
+					<textarea name="banner_main"></textarea>
+				</label>
+				<label>Код банера в боковой панели
+					<textarea name="banner_side"></textarea>
+				</label>
+				<label>Категория
+					<input name="category" type="text">
+				</label>
+				<label>Язык
+					<input name="language" type="text">
+				</label>
+				<label>Статус
+					<div class="switch small">
+						<input id="edit-item-state" type="checkbox">
+						<label for="edit-item-state"></label>
+					</div>
+				</label>
+				<label>Отображать на главной
+					<input name="on_main" type="text">
+				</label>
+				<label>Отображать в боковой панели
+					<input name="on_side" type="text">
+				</label>
+				<label>Отображать в новостях
+					<input name="on_news" type="text">
+				</label>
+				<label>Значимость статьи
+					<input name="power" type="text">
+				</label>
+				<label>Дата создания
+					<input name="created" type="text">
+				</label>
+				<label>Автор
+					<input name="created_by" type="text">
+				</label>
+				<label>Дата последних правок
+					<input name="modified" type="text">
+				</label>
+				<label>Автор правок
+					<input name="modified_by" type="text">
+				</label>
+				<label>Дата публикации
+					<input name="published" type="text">
+				</label>
+				<label>Ответственный за публикацию
+					<input name="published_by" type="text">
+				</label>
+				<label>Опубликовано с ...
+					<input name="pub_from" type="text">
+				</label>
+				<label>Опубликовано до ...
+					<input name="pub_to" type="text">
+				</label>
+				<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
+				<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
+			</fieldset>
+		</div>
+	</div>
 	<a class="close-reveal-modal">&#215;</a>
 </div>
 {% endif %}
 
+{% if perms.project.change_content %}
+<!-- Модальное окно добавления файла -->
+<div id="addContentModal" class="reveal-modal large" data-reveal>
+	<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+	<input type="hidden" name="id" value="0">
+	<input type="">
+	<textarea name="">
+	</textarea>
+	<button class="alert"><i class="fa fa-ok"></i>&nbsp;Выйти</button>
+	<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
+	<a class="close-reveal-modal">&#215;</a>
+</div>
+{% endif %}
 
 {% endblock %}
 {% block js-content %}

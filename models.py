@@ -70,9 +70,6 @@ class Content(models.Model):
 	source_url   = models.CharField(max_length=512, null=True)
 
 	state        = models.BooleanField(default=True)
-	pub_from     = models.DateTimeField()
-	pub_to       = models.DateTimeField()
-
 	on_main      = models.BooleanField(default=False)
 	on_side      = models.BooleanField(default=False)
 	on_news      = models.BooleanField(default=False)
@@ -84,8 +81,8 @@ class Content(models.Model):
 	modified_by  = models.CharField(max_length=100, null=True, default=None)
 	published    = models.DateTimeField(null=True, default=None)
 	published_by = models.CharField(max_length=100, null=True, default=None)
-	pub_from     = models.DateTimeField(null=True, default=None)
-	pub_to       = models.DateTimeField(null=True, default=None)
+	pub_from     = models.DateTimeField()
+	pub_to       = models.DateTimeField()
 
 	def __str__(self):
 		return self.title
