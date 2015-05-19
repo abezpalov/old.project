@@ -6,103 +6,122 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{% block title %}Anodos{% endblock %}</title>
 	<link rel="stylesheet" href="/static/css/foundation.css">
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/static/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/static/css/ns-default.css">
 	<link rel="stylesheet" href="/static/css/ns-style-growl.css">
+	<link rel="stylesheet" href="/static/css/fotorama.css">
 	<link rel="stylesheet" href="/static/css/template.css">
 	<script src="/static/js/vendor/modernizr.js"></script>
 </head>
 <body>
 
-<!-- Логотип -->
-<div class="row hide-for-small-only">
-	<div class="medium-6 large-4 columns"><h1><a href="/">Anodos</a></h1></div>
-	<div class="medium-6 large-8 columns text-right">Сайт разрабатывается, пожалуйста, по всем вопросам <br/>связывайтесь по электронной почте: <a href="mailto:root@anodos.ru">root@anodos.ru</a></div>
-</div>
-
-<!-- Панель навигации -->
-<div class="row">
-	<div class="contain-to-grid">
-		<nav class="top-bar" data-topbar role="navigation">
-
-			<!-- Логотип для смарфонов -->
-			<ul class="title-area show-for-small-only">
-				<li class="name">
-					<h1><a href="/">Anodos</a></h1>
-				</li>
-				<!-- Вызов меню для смартфонов -->
-				<li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
-			</ul>
-
-			<section class="top-bar-section">
-
-				<!-- Меню -->
-				<ul class="left">
-					<li><a href="/news/">Новости и мероприятия</a></li>
-					<li><a href="/solutions/">Решения</a></li>
-					<li class="has-dropdown">
-						<a href="#">Товары и услуги</a>
-						<ul class="dropdown">
-							<li><a href="/catalog/products/">Каталог товаров и услуг</a></li>
-							<li><a href="/catalog/current-order/">Текущий заказ</a></li>
-							{% if user.is_authenticated %}
-							<li><a href="/catalog/orders/">Заказы</a></li>
-							{% endif %}
-							{% if perms.catalog.change_product %}
-							<li class="divider"></li>
-							<li><a href="/catalog/price-types/">Типы цен и наценки</a></li>
-							<li><a href="/catalog/currencies/">Валюты и их курсы</a></li>
-							<li><a href="/catalog/categories/">Категории товаров</a></li>
-							<li><a href="/catalog/vendors/">Производители</a></li>
-							<li><a href="/catalog/distributors/">Поставщики</a></li>
-							<li><a href="/catalog/stocks/">Склады</a></li>
-							<li><a href="/catalog/updaters/">Загрузчики</a></li>
-							<li><a href="/catalog/vendor-synonyms/">Синонимы производителей</a></li>
-							<li><a href="/catalog/category-synonyms/">Синонимы категорий</a></li>
-							{% endif %}
-						</ul>
-					</li>
-					{% if perms.project.change_content %}
-					<li class="has-dropdown">
-						<a href="#">Контент</a>
-						<ul class="dropdown">
-							<li><a href="/content/">Документы и статьи</a></li>
-							<li><a href="/content/categories/">Категории</a></li>
-							<li><a href="/content/doc-types/">Типы документов</a></li>
-							<li><a href="/content/languages/">Языки</a></li>
-						</ul>
-					</li>
-					{% endif %}
-				</ul>
-
-				<!-- Поиск и авторизация -->
-				<ul class="right">
-					{% block search %}
-					<li class="divider"></li>
-					<li class="has-form">
-						<div class="row collapse">
-							<div class="large-8 small-9 columns">
-								<input type="text" placeholder="Найти...">
-							</div>
-							<div class="large-4 small-3 columns">
-								<a href="#" class="secondary button expand"><i class="fa fa-search"></i></a>
-							</div>
-						</div>
-					</li>
-					{% endblock %}
-					<li class="divider"></li>
-					<li class="has-form">
-						{% if user.is_authenticated %}
-						<button data-reveal-id="profileModal"><i class="fa fa-user"></i>&nbsp;{{ user.username }}</button>
-						{% else %}
-						<button data-reveal-id="loginModal"><i class="fa fa-lock"></i><span class="hide-for-medium">&nbsp;Войти</span></button>
-						{% endif %}
-					</li>
-				</ul>
-			</section>
-		</nav>
+<header>
+	<!-- Логотип -->
+	<div class="row hide-for-small-only">
+		<div class="medium-6 large-4 columns"><h1><a href="/">Anodos</a></h1></div>
+		<div class="medium-6 large-8 columns text-right">Сайт разрабатывается, пожалуйста, по всем вопросам <br/>связывайтесь по электронной почте: <a href="mailto:root@anodos.ru">root@anodos.ru</a></div>
 	</div>
-</div>
+
+	<!-- Панель навигации -->
+	<div class="row">
+		<div class="contain-to-grid">
+			<nav class="top-bar" data-topbar role="navigation">
+
+				<!-- Логотип для смарфонов -->
+				<ul class="title-area show-for-small-only">
+					<li class="name">
+						<h1><a href="/">Anodos</a></h1>
+					</li>
+					<!-- Вызов меню для смартфонов -->
+					<li class="toggle-topbar menu-icon"><a href="#"><span></span></a></li>
+				</ul>
+
+				<section class="top-bar-section">
+
+					<!-- Меню -->
+					<ul class="left">
+						<li><a href="/news/">Новости и мероприятия</a></li>
+						<li><a href="/solutions/">Решения</a></li>
+						<li class="has-dropdown">
+							<a href="#">Товары и услуги</a>
+							<ul class="dropdown">
+								<li><a href="/catalog/products/">Каталог товаров и услуг</a></li>
+								<li><a href="/catalog/current-order/">Текущий заказ</a></li>
+								{% if user.is_authenticated %}
+								<li><a href="/catalog/orders/">Заказы</a></li>
+								{% endif %}
+								{% if perms.catalog.change_product %}
+								<li class="divider"></li>
+								<li><a href="/catalog/price-types/">Типы цен и наценки</a></li>
+								<li><a href="/catalog/currencies/">Валюты и их курсы</a></li>
+								<li><a href="/catalog/categories/">Категории товаров</a></li>
+								<li><a href="/catalog/vendors/">Производители</a></li>
+								<li><a href="/catalog/distributors/">Поставщики</a></li>
+								<li><a href="/catalog/stocks/">Склады</a></li>
+								<li><a href="/catalog/updaters/">Загрузчики</a></li>
+								<li><a href="/catalog/vendor-synonyms/">Синонимы производителей</a></li>
+								<li><a href="/catalog/category-synonyms/">Синонимы категорий</a></li>
+								{% endif %}
+							</ul>
+						</li>
+						{% if perms.project.change_article %}
+						<li class="has-dropdown">
+							<a href="#">Контент</a>
+							<ul class="dropdown">
+								<li><a href="/content/edit/articles/">Документы и статьи</a></li>
+								<li><a href="/content/edit/categories/">Категории</a></li>
+								<li><a href="/content/edit/doc-types/">Типы документов</a></li>
+								<li><a href="/content/edit/languages/">Языки</a></li>
+							</ul>
+						</li>
+						{% endif %}
+					</ul>
+
+					<!-- Поиск и авторизация -->
+					<ul class="right">
+						<li class="has-form">
+							{% if user.is_authenticated %}
+							<button data-reveal-id="profileModal"><i class="fa fa-unlock"></i></button>
+							{% else %}
+							<button data-reveal-id="loginModal"><i class="fa fa-lock"></i><span class="hide-for-medium">&nbsp;Войти</span></button>
+							{% endif %}
+						</li>
+						<li class="divider"></li>
+						{% block search %}
+						<li class="divider"></li>
+						<li class="has-form">
+							<div class="row collapse">
+								<div class="large-8 small-9 columns">
+									<input type="text" placeholder="Найти...">
+								</div>
+								<div class="large-4 small-3 columns">
+									<a href="#" class="secondary button expand"><i class="fa fa-search"></i></a>
+								</div>
+							</div>
+						</li>
+						{% endblock %}
+
+					</ul>
+				</section>
+			</nav>
+		</div>
+	</div>
+
+	<!-- Крошки -->
+	<div class="row">
+	&nbsp;
+	</div>
+</header>
+
+<main>
+{% block content %}<div class="row">&nbsp;</div>{% endblock %}
+</main>
+
+<footer>
+	<div class="row">
+	Подвал
+	</div>
+</footer>
 
 {% if user.is_authenticated %}
 <!-- Модальное окно профиля пользователя -->
@@ -177,71 +196,23 @@
 </div>
 {% endif %}
 
-<!-- Крошки -->
-<div class="row">
-&nbsp;
-</div>
-{% block content %}{% endblock %}
-
 <script src="/static/js/vendor/jquery.js"></script>
+<script src="/static/js/vendor/fastclick.js"></script>
 <script src="/static/js/vendor/classie.js"></script>
 <script src="/static/js/vendor/notificationFx.js"></script>
+<script src="/static/js/vendor/fotorama.js"></script>
 <script src="/static/js/foundation.min.js"></script>
 <script src="/static/js/foundation/foundation.topbar.js"></script>
 <script src="/static/js/foundation/foundation.reveal.js"></script>
 <script>
-$(document).foundation();
-
-$(document).ready(function(){
-
-	$("body").delegate("button[data-do*='login-modal-cancel']", "click", function(){
-		$('#loginModal').foundation('reveal', 'close');
-		return false;
-	});
-
-	$("body").delegate("button[data-do*='profile-modal-cancel']", "click", function(){
-		$('#profileModal').foundation('reveal', 'close');
-		return false;
-	});
-
-});
+{% include "main.js" %}
 </script>
-{% block js-content %}{% endblock %}
 
-{% block fotorama %}
-<link  href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.3/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.3/fotorama.js"></script> <!-- 16 KB -->
+{% block js-content %}
 {% endblock %}
 
 {% block metrika %}
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-(function (d, w, c) {
-    (w[c] = w[c] || []).push(function() {
-        try {
-            w.yaCounter13190530 = new Ya.Metrika({id:13190530,
-                    webvisor:true,
-                    clickmap:true,
-                    trackLinks:true,
-                    accurateTrackBounce:true,
-                    trackHash:true});
-        } catch(e) { }
-    });
-
-    var n = d.getElementsByTagName("script")[0],
-        s = d.createElement("script"),
-        f = function () { n.parentNode.insertBefore(s, n); };
-    s.type = "text/javascript";
-    s.async = true;
-    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
-
-    if (w.opera == "[object Opera]") {
-        d.addEventListener("DOMContentLoaded", f, false);
-    } else { f(); }
-})(document, window, "yandex_metrika_callbacks");
-</script>
-<noscript><div><img src="//mc.yandex.ru/watch/13190530" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+{% include "metrika.html" %}
 {% endblock %}
 
 </body>

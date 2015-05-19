@@ -29,8 +29,7 @@
 		<div>Тест: новости и статьи.</div>
 		<div>Тест: новости и статьи.</div>
 		<div>Тест: новости и статьи.</div>
-		<div>Тест: новости и статьи.</div>
-		<div>Тест: новости и статьи.</div>
+		<div>Тест: новости и статьи.</div>		<div>Тест: новости и статьи.</div>
 	</div>
 	<div class="large-4 medium-6 columns">
 		<div>Тест: вторичный контент и реклама.</div>
@@ -39,130 +38,95 @@
 		{% if perms.project.change_content %}
 		<fieldset>
 			<legend>Управление контентом</legend>
-			<button class="small expand" data-reveal-id="editContentModal"><i class="fa fa-pencil-square-o"></i>&nbsp;Написать статью</button>
-			<button class="small expand" data-reveal-id="addContentModal"><i class="fa fa-file-o"></i>&nbsp;Добавить файл</button>
+			<button class="small expand" data-reveal-id="modal-add-article"><i class="fa fa-pencil-square-o"></i>&nbsp;Написать статью</button>
+			<button class="small expand" data-reveal-id="modal-add-document"><i class="fa fa-file-o"></i>&nbsp;Добавить файл</button>
 		</fieldset>
 		{% endif %}
 	</div>
 </div>
 
-{% if perms.project.change_content %}
-<!-- Модальное редактирования статьи -->
-<div id="editContentModal" class="reveal-modal large" data-reveal>
+<!-- Модальное окно добавления статьи -->
+<div id="modal-add-article" class="reveal-modal large" data-reveal>
 	<dl class="tabs" data-tab>
-		<dd class="active"><a href="#headPanel">Заглавие</a></dd>
-		<dd><a href="#contentPanel">Содержимое</a></dd>
-		<dd><a href="#metaPanel">Метаданные</a></dd>
+		<dd id="add-article-modal-content-dd" class="active"><a href="#add-article-modal-content">Содержание</a></dd>
+		<dd id="add-article-modal-desc-dd"><a href="#add-article-modal-desc">Описание</a></dd>
+		<dd id="add-article-modal-meta-dd"><a href="#add-article-modal-meta">Служебное</a></dd>
 	</dl>
 	<div class="tabs-content">
-		<div class="content active" id="headPanel">
+		<div class="content active" id="add-article-modal-content">
+			<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+			<input type="hidden" name="id" value="0">
 
-			<fieldset>
-				<input name="csrfmiddlewaretoken" type="hidden" value="{{ csrf_token }}">
-				<input name="id" type="hidden" value="0">
-				<label>Заголовок
-					<input name="title" type="text">
-				</label>
-				<label>Синоним
-					<input name="alias" type="text">
-				</label>
-				<label>Путь (для формирования URL)
-					<input name="patch" type="text">
-				</label>
-				<label>Прямая ссылка
-					<input name="src" type="text">
-				</label>
-				<label>Прямая ссылка на превью
-					<input name="thumb_src" type="text">
-				</label>
-				<label>Тип документа
-					<input name="doc_type" type="text">
-				</label>
-				<label>Введный текст
-					<textarea name="intro"></textarea>
-				</label>
-				<label>Содержимое
-					<textarea name="content"></textarea>
-				</label>
-				<label>Описание
-					<textarea name="description"></textarea>
-				</label>
-				<label>Код банера на главной
-					<textarea name="banner_main"></textarea>
-				</label>
-				<label>Код банера в боковой панели
-					<textarea name="banner_side"></textarea>
-				</label>
-				<label>Категория
-					<input name="category" type="text">
-				</label>
-				<label>Язык
-					<input name="language" type="text">
-				</label>
-				<label>Статус
-					<div class="switch small">
-						<input id="edit-item-state" type="checkbox">
-						<label for="edit-item-state"></label>
-					</div>
-				</label>
-				<label>Отображать на главной
-					<input name="on_main" type="text">
-				</label>
-				<label>Отображать в боковой панели
-					<input name="on_side" type="text">
-				</label>
-				<label>Отображать в новостях
-					<input name="on_news" type="text">
-				</label>
-				<label>Значимость статьи
-					<input name="power" type="text">
-				</label>
-				<label>Дата создания
-					<input name="created" type="text">
-				</label>
-				<label>Автор
-					<input name="created_by" type="text">
-				</label>
-				<label>Дата последних правок
-					<input name="modified" type="text">
-				</label>
-				<label>Автор правок
-					<input name="modified_by" type="text">
-				</label>
-				<label>Дата публикации
-					<input name="published" type="text">
-				</label>
-				<label>Ответственный за публикацию
-					<input name="published_by" type="text">
-				</label>
-				<label>Опубликовано с ...
-					<input name="pub_from" type="text">
-				</label>
-				<label>Опубликовано до ...
-					<input name="pub_to" type="text">
-				</label>
-				<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
-				<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
-			</fieldset>
+			<label>Заголовок
+				<input type="text" name="title" value="">
+			</label>
+			<label>Содержание
+				<textarea id="add-article-content"></textarea>
+			</label>
+
+		</div>
+		<div class="content" id="add-article-modal-desc">
+			<label>Псевдоним
+				<input id="add-article-alias" type="text" value="">
+			</label>
+			<label>Путь
+				<input id="add-article-patch" type="text" value="">
+			</label>
+			<label>Предпросмотр
+				<input id="add-article-thumb_src" type="text" value="">
+			</label>
+			<label>Вступительный текст
+				<textarea id="add-article-intro"></textarea>
+			</label>
+			<label>Описание
+				<textarea id="add-article-description"></textarea>
+			</label>
+			<label>Категория
+				<select id="add-article-category">
+					<option value="null" selected> - Не определена - </option>
+					{% for category in categories %}
+					<option value="{{ category.id }}">{{ category.name }}</option>
+					{% endfor %}
+				</select>
+			</label>
+			<label>Источник
+				<input id="add-article-source" type="text" value="">
+			</lable>
+			<lable>Ссылка на источник
+				<input id="add-article-source_url" type="text" value="">
+			</lable>
+		</div>
+		<div class="content" id="add-article-modal-meta">
+			<label>Статус
+				<div class="switch small">
+					<input id="add-article-state" type="checkbox">
+					<label for="add-article-state"></label>
+				</div>
+			</label>
+			<label>На главной
+				<div class="switch small">
+					<input id="add-article-on_main" type="checkbox">
+					<label for="add-article-on_main"></label>
+				</div>
+			</label>
 		</div>
 	</div>
-	<a class="close-reveal-modal">&#215;</a>
-</div>
-{% endif %}
 
-{% if perms.project.change_content %}
-<!-- Модальное окно добавления файла -->
-<div id="addContentModal" class="reveal-modal large" data-reveal>
-	<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-	<input type="hidden" name="id" value="0">
-	<input type="">
-	<textarea name="">
-	</textarea>
 	<button class="alert"><i class="fa fa-ok"></i>&nbsp;Выйти</button>
 	<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
 	<a class="close-reveal-modal">&#215;</a>
 </div>
-{% endif %}
+
+<!-- Модальное окно добавления файла -->
+<div id="modal-add-document" class="reveal-modal large" data-reveal>
+	<h2>Загрузить файл</h2>
+	<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+	<input type="hidden" name="id" value="0">
+	<textarea name=""></textarea>
+	<button class="alert"><i class="fa fa-ok"></i>&nbsp;Выйти</button>
+	<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
+	<a class="close-reveal-modal">&#215;</a>
+</div>
 
 {% endblock %}
 {% block js-content %}
