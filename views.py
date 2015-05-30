@@ -8,6 +8,12 @@ from django.contrib.auth import authenticate, login, logout
 def home(request):
 	"Представление: Главная страница."
 
+	# Импортируем
+	from project.models import Article
+
+	# Получаем списки объектов
+	articles = Article.objects.all().filter(state=True).filter(on_main=True)
+
 	return render(request, 'content/home.html', locals())
 
 
@@ -56,7 +62,7 @@ def getCategoryTree(tree, parent=None):
 	from project.models import Category
 
 	# Получаем список дочерних категорий
-	categories = Category.objects.filter(parent=parent).order_by('order')
+	categories = Category.objects.filter(parent=parent)
 
 	# Проходим по списку категорий с рекурсивным погружением
 	for category in categories:
@@ -211,9 +217,9 @@ def ajaxSaveArticle(request):
 
 	# description
 	if request.POST.get('article_description').strip():
-		article.intro = request.POST.get('article_description').strip()
+		article.description = request.POST.get('article_description').strip()
 	else:
-		article.intro = ''
+		article.description = ''
 
 	# category
 	try:
@@ -321,7 +327,13 @@ def ajaxAddCategory(request):
 		else:
 			parentId = parent.id
 
-	result = {'status': 'success', 'message': 'Категория ' + name + ' добавлена.', 'categoryId': category.id, 'categoryName': category.name, 'categoryAlias': category.alias, 'parentId': parentId}
+	result = {
+		'status': 'success',
+		'message': 'Категория {} добавлена.'.format(name),
+		'categoryId': category.id,
+		'categoryName': category.name,
+		'categoryAlias': category.alias,
+		'parentId': parentId}
 
 	# Получаем дерево категорий
 	categories = []
@@ -363,9 +375,9 @@ def ajaxSwitchCategoryState(request):
 			else:
 				category.state = False;
 			category.save();
-			result = {'status': 'success', 'message': 'Статус категории ' + category.name + ' изменен на ' + str(category.state) + '.'}
+			result = {'status': 'success', 'message': 'Статус категории {} изменен на {}.'.format(category.name, category.state)}
 		except Category.DoesNotExist:
-			result = {'status': 'alert', 'message': 'Категория с идентификатором ' + request.POST.get('id') + ' отсутствует в базе.'}
+			result = {'status': 'alert', 'message': 'Категория с идентификатором {} отсутствует в базе.'.format(request.POST.get('id'))}
 
 	# Возвращаем ответ
 	return HttpResponse(json.dumps(result), 'application/javascript')
@@ -396,9 +408,9 @@ def ajaxSaveCategory(request):
 			category.alias = request.POST.get('alias')
 			if request.POST.get('description'): category.description = request.POST.get('description')
 			category.save()
-			result = {'status': 'success', 'message': 'Изменения категории ' + category.name + ' сохранены.'}
+			result = {'status': 'success', 'message': 'Изменения категории {} сохранены.'.format(category.name)}
 		except Category.DoesNotExist:
-			result = {'status': 'alert', 'message': 'Категория с идентификатором ' + request.POST.get('id') + ' отсутствует в базе.'}
+			result = {'status': 'alert', 'message': 'Категория с идентификатором {} отсутствует в базе.'.format(request.POST.get('id'))}
 
 	# Возвращаем ответ
 	return HttpResponse(json.dumps(result), 'application/javascript')
@@ -428,7 +440,7 @@ def ajaxTrashCategory(request):
 			category.delete()
 			result = {'status': 'success', 'message': 'Категория удалена.'}
 		except Category.DoesNotExist:
-			result = {'status': 'alert', 'message': 'Категория с идентификатором ' + request.POST.get('id') + ' отсутствует в базе.'}
+			result = {'status': 'alert', 'message': 'Категория с идентификатором {} отсутствует в базе.'.format(request.POST.get('id'))}
 
 	# Возвращаем ответ
 	return HttpResponse(json.dumps(result), 'application/javascript')

@@ -26,10 +26,12 @@
 			<img src="media/test/7.jpg" data-caption="7">
 			<img src="media/test/8.jpg" data-caption="8">
 		</div>
-		<div>Тест: новости и статьи.</div>
-		<div>Тест: новости и статьи.</div>
-		<div>Тест: новости и статьи.</div>
-		<div>Тест: новости и статьи.</div>		<div>Тест: новости и статьи.</div>
+		{% for article in articles %}
+		<div>
+			<h3>{{ article.title}}</h3>
+			<p>{{ article.intro}}</p>
+		</div>
+		{% endfor %}
 	</div>
 	<div class="large-4 medium-6 columns">
 		<div>Тест: вторичный контент и реклама.</div>
