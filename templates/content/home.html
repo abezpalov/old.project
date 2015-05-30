@@ -1,8 +1,8 @@
 {% extends "main.html" %}
 {% block title %}Anodos{% endblock %}
 
-{% block content %}
 
+{% block content %}
 <div class="row">
 	<div class="small-12 columns">
 		<h3>{{ product.name }}</h3>
@@ -35,102 +35,10 @@
 		<div>Тест: вторичный контент и реклама.</div>
 		<div>Тест: вторичный контент и реклама.</div>
 		<div>Тест: вторичный контент и реклама.</div>
-		{% if perms.project.change_content %}
-		<fieldset>
-			<legend>Управление контентом</legend>
-			<button class="small expand" data-reveal-id="modal-add-article"><i class="fa fa-pencil-square-o"></i>&nbsp;Написать статью</button>
-			<button class="small expand" data-reveal-id="modal-add-document"><i class="fa fa-file-o"></i>&nbsp;Добавить файл</button>
-		</fieldset>
-		{% endif %}
 	</div>
 </div>
-
-<!-- Модальное окно добавления статьи -->
-<div id="modal-add-article" class="reveal-modal large" data-reveal>
-	<dl class="tabs" data-tab>
-		<dd id="add-article-modal-content-dd" class="active"><a href="#add-article-modal-content">Содержание</a></dd>
-		<dd id="add-article-modal-desc-dd"><a href="#add-article-modal-desc">Описание</a></dd>
-		<dd id="add-article-modal-meta-dd"><a href="#add-article-modal-meta">Служебное</a></dd>
-	</dl>
-	<div class="tabs-content">
-		<div class="content active" id="add-article-modal-content">
-			<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-			<input type="hidden" name="id" value="0">
-
-			<label>Заголовок
-				<input type="text" name="title" value="">
-			</label>
-			<label>Содержание
-				<textarea id="add-article-content"></textarea>
-			</label>
-
-		</div>
-		<div class="content" id="add-article-modal-desc">
-			<label>Псевдоним
-				<input id="add-article-alias" type="text" value="">
-			</label>
-			<label>Путь
-				<input id="add-article-patch" type="text" value="">
-			</label>
-			<label>Предпросмотр
-				<input id="add-article-thumb_src" type="text" value="">
-			</label>
-			<label>Вступительный текст
-				<textarea id="add-article-intro"></textarea>
-			</label>
-			<label>Описание
-				<textarea id="add-article-description"></textarea>
-			</label>
-			<label>Категория
-				<select id="add-article-category">
-					<option value="null" selected> - Не определена - </option>
-					{% for category in categories %}
-					<option value="{{ category.id }}">{{ category.name }}</option>
-					{% endfor %}
-				</select>
-			</label>
-			<label>Источник
-				<input id="add-article-source" type="text" value="">
-			</lable>
-			<lable>Ссылка на источник
-				<input id="add-article-source_url" type="text" value="">
-			</lable>
-		</div>
-		<div class="content" id="add-article-modal-meta">
-			<label>Статус
-				<div class="switch small">
-					<input id="add-article-state" type="checkbox">
-					<label for="add-article-state"></label>
-				</div>
-			</label>
-			<label>На главной
-				<div class="switch small">
-					<input id="add-article-on_main" type="checkbox">
-					<label for="add-article-on_main"></label>
-				</div>
-			</label>
-		</div>
-	</div>
-
-	<button class="alert"><i class="fa fa-ok"></i>&nbsp;Выйти</button>
-	<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
-	<a class="close-reveal-modal">&#215;</a>
-</div>
-
-<!-- Модальное окно добавления файла -->
-<div id="modal-add-document" class="reveal-modal large" data-reveal>
-	<h2>Загрузить файл</h2>
-	<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-	<input type="hidden" name="id" value="0">
-	<textarea name=""></textarea>
-	<button class="alert"><i class="fa fa-ok"></i>&nbsp;Выйти</button>
-	<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
-	<a class="close-reveal-modal">&#215;</a>
-</div>
-
 {% endblock %}
+
+
 {% block js-content %}
-<script>
-{% include "catalog/js/product.js" %}
-</script>
 {% endblock %}

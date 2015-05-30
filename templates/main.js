@@ -9,3 +9,5 @@ $("body").delegate("button[data-do*='profile-modal-cancel']", "click", function(
 	$('#profileModal').foundation('reveal', 'close');
 	return false;
 });
+
+// TODO AJAX-авторизация

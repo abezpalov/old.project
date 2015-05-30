@@ -9,9 +9,12 @@ urlpatterns = patterns('',
 	url(r'^admin/', include(admin.site.urls)),
 
 
+	# Content Edit Lists
+	url(r'^content/edit/articles/$', 'project.views.editArticles', name='editArticles'),
 	url(r'^content/edit/categories/$', 'project.views.editCategories', name='editCategories'),
 
 	# Ajax Article
+	url(r'^content/ajax/get-article/$', 'project.views.ajaxGetArticle', name='ajaxGetArticle'),
 	url(r'^content/ajax/save-article/$', 'project.views.ajaxSaveArticle', name='ajaxSaveArticle'),
 
 	# Ajax Category
