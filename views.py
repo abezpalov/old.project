@@ -12,9 +12,23 @@ def home(request):
 	from project.models import Article
 
 	# Получаем списки объектов
-	articles = Article.objects.all().filter(state=True).filter(on_main=True)
+	articles = Article.objects.all().filter(state = True).filter(on_main = True)
 
 	return render(request, 'content/home.html', locals())
+
+
+def article(request, article_id = None):
+	"Представление: Статья."
+
+	# Импортируем
+	from project.models import Article
+
+	try:
+		article = Article.objects.get(id = article_id)
+	except Article.DoesNotExist:
+		return HttpResponse(status = 404)
+
+	return render(request, 'content/article.html', locals())
 
 
 def editArticles(request):
@@ -55,7 +69,7 @@ def editCategories(request):
 	return render(request, 'content/edit-categories.html', locals())
 
 
-def getCategoryTree(tree, parent=None):
+def getCategoryTree(tree, parent = None):
 	"Функция: Дерево категорий (используется рекурсия)."
 
 	# Импортируем
@@ -89,13 +103,13 @@ def login_view(request):
 			else:
 				# TODO Сделать человечный ответ
 				# Пользователь заблокирован
-				return HttpResponse(status=401)
+				return HttpResponse(status = 401)
 		else:
 			# TODO Сделать человечный ответ
 			# Пользователь неавторизован
-			return HttpResponse(status=401)
+			return HttpResponse(status = 401)
 	else:
-		return HttpResponse(status=400)
+		return HttpResponse(status = 400)
 
 
 def logout_view(request):
@@ -107,7 +121,7 @@ def logout_view(request):
 		logout(request)
 		return redirect(redirect_url)
 	else:
-		return HttpResponse(status=400)
+		return HttpResponse(status = 400)
 
 
 def ajaxGetArticle(request):
@@ -119,7 +133,7 @@ def ajaxGetArticle(request):
 
 	# Проверяем права доступа
 	if not request.user.has_perm('project.change_article'):
-		return HttpResponse(status=403)
+		return HttpResponse(status = 403)
 
 	# Получаем объект
 	try:
@@ -167,17 +181,17 @@ def ajaxSaveArticle(request):
 
 	# Проверяем тип запроса
 	if (not request.is_ajax()) or (request.method != 'POST'):
-		return HttpResponse(status=400)
+		return HttpResponse(status = 400)
 
 	# Проверяем права доступа
 	try:
 		article = Article.objects.get(id = request.POST.get('id'))
 		if not request.user.has_perm('project.change_article'):
-			return HttpResponse(status=403)
+			return HttpResponse(status = 403)
 	except Article.DoesNotExist:
 		article = Article()
 		if not request.user.has_perm('project.add_article'):
-			return HttpResponse(status=403)
+			return HttpResponse(status = 403)
 		article.created = timezone.now()
 		article.created_by = "{} {}".format(request.user.first_name, request.user.last_name)
 
@@ -284,11 +298,11 @@ def ajaxAddCategory(request):
 
 	# Проверяем тип запроса
 	if (not request.is_ajax()) or (request.method != 'POST'):
-		return HttpResponse(status=400)
+		return HttpResponse(status = 400)
 
 	# Проверяем права доступа
 	if not request.user.has_perm('project.change_category'):
-		return HttpResponse(status=403)
+		return HttpResponse(status = 403)
 
 	# Проверяем на пустые значения
 	if (request.POST.get('name').strip() == '') or (request.POST.get('parent').strip() == ''):
@@ -305,10 +319,10 @@ def ajaxAddCategory(request):
 			level = 0
 		else:
 			try:
-				parent = Category.objects.get(id=request.POST.get('parent').strip())
+				parent = Category.objects.get(id = request.POST.get('parent').strip())
 				level = parent.level + 1
 			except Category.DoesNotExist: # Указанная родительская категория не существует
-				return HttpResponse(status=406)
+				return HttpResponse(status = 406)
 
 		category = Category(name=name, alias=alias, parent=parent, level=level, order=-1, path='', created=datetime.now(), modified=datetime.now())
 		category.save()
@@ -358,18 +372,18 @@ def ajaxSwitchCategoryState(request):
 
 	# Проверяем тип запроса
 	if (not request.is_ajax()) or (request.method != 'POST'):
-		return HttpResponse(status=400)
+		return HttpResponse(status = 400)
 
 	# Проверяем права доступа
 	if not request.user.has_perm('project.change_category'):
-		return HttpResponse(status=403)
+		return HttpResponse(status = 403)
 
 	# Проверяем корректность вводных данных
 	if not request.POST.get('id') or not request.POST.get('state'):
 		result = {'status': 'warning', 'message': 'Пожалуй, вводные данные не корректны.'}
 	else:
 		try:
-			category = Category.objects.get(id=request.POST.get('id'))
+			category = Category.objects.get(id = request.POST.get('id'))
 			if request.POST.get('state') == 'true':
 				category.state = True;
 			else:
@@ -393,11 +407,11 @@ def ajaxSaveCategory(request):
 
 	# Проверяем тип запроса
 	if (not request.is_ajax()) or (request.method != 'POST'):
-		return HttpResponse(status=400)
+		return HttpResponse(status = 400)
 
 	# Проверяем права доступа
 	if not request.user.has_perm('project.change_category'):
-		return HttpResponse(status=403)
+		return HttpResponse(status = 403)
 
 	if not request.POST.get('id') or not request.POST.get('name') or not request.POST.get('alias') :
 		result = {'status': 'warning', 'message': 'Пожалуй, вводные данные не корректны.'}
@@ -426,17 +440,17 @@ def ajaxTrashCategory(request):
 
 	# Проверяем тип запроса
 	if (not request.is_ajax()) or (request.method != 'POST'):
-		return HttpResponse(status=400)
+		return HttpResponse(status = 400)
 
 	# Проверяем права доступа
 	if not request.user.has_perm('project.change_category'):
-		return HttpResponse(status=403)
+		return HttpResponse(status = 403)
 
 	if not request.POST.get('id'):
 		result = {'status': 'warning', 'message': 'Пожалуй, вводные данные не корректны.'}
 	else:
 		try:
-			category = Category.objects.get(id=request.POST.get('id'))
+			category = Category.objects.get(id = request.POST.get('id'))
 			category.delete()
 			result = {'status': 'success', 'message': 'Категория удалена.'}
 		except Category.DoesNotExist:

@@ -8,6 +8,9 @@ urlpatterns = patterns('',
 	url(r'^catalog/', include('catalog.urls')),
 	url(r'^admin/', include(admin.site.urls)),
 
+	# Article
+	# ex: /article/58/
+	url(r'^article/(?P<article_id>[0-9]+)/$', 'project.views.article', name='article'),
 
 	# Content Edit Lists
 	url(r'^content/edit/articles/$', 'project.views.editArticles', name='editArticles'),
