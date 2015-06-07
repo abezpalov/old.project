@@ -19,7 +19,7 @@
 	<!-- Логотип -->
 	<div class="row hide-for-small-only">
 		<div class="medium-6 large-4 columns"><h1><a href="/">Anodos</a></h1></div>
-		<div class="medium-6 large-8 columns text-right">&nbsp;</div>
+		<div class="medium-6 large-8 columns text-right">Сайт разрабатывается.</div>
 	</div>
 
 	<!-- Панель навигации -->
@@ -45,33 +45,60 @@
 						<li class="has-dropdown">
 							<a href="#">Товары и услуги</a>
 							<ul class="dropdown">
+
 								<li><a href="/catalog/products/">Каталог товаров и услуг</a></li>
-								<li><a href="/catalog/current-order/">Текущий заказ</a></li>
+								<li><a href="/catalog/order/">Текущий заказ</a></li>
+
 								{% if user.is_authenticated %}
 								<li><a href="/catalog/orders/">Заказы</a></li>
 								{% endif %}
-								{% if perms.catalog.change_product %}
-								<li class="divider"></li>
-								<li><a href="/catalog/price-types/">Типы цен и наценки</a></li>
-								<li><a href="/catalog/currencies/">Валюты и их курсы</a></li>
-								<li><a href="/catalog/categories/">Категории товаров</a></li>
-								<li><a href="/catalog/vendors/">Производители</a></li>
+
+								{% if perms.catalog.add_distributor or perms.catalog.change_distributor %}
 								<li><a href="/catalog/distributors/">Поставщики</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_stock or perms.catalog.change_stock %}
 								<li><a href="/catalog/stocks/">Склады</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_vendor or perms.catalog.change_vendor %}
+								<li><a href="/catalog/vendors/">Производители</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_category or perms.catalog.change_category %}
+								<li><a href="/catalog/categories/">Категории товаров</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_pricetype or perms.catalog.change_pricetype %}
+								<li><a href="/catalog/price-types/">Типы цен и наценки</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_currency or perms.catalog.change_currency %}
+								<li><a href="/catalog/currencies/">Валюты и их курсы</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_updater or perms.catalog.change_updater %}
 								<li><a href="/catalog/updaters/">Загрузчики</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_vendorsynonym or perms.catalog.change_vendorsynonym %}
 								<li><a href="/catalog/vendor-synonyms/">Синонимы производителей</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_categorysynonym or perms.catalog.change_categorysynonym %}
 								<li><a href="/catalog/category-synonyms/">Синонимы категорий</a></li>
 								{% endif %}
+
 							</ul>
 						</li>
 						{% if perms.project.change_article %}
 						<li class="has-dropdown">
 							<a href="#">Контент</a>
 							<ul class="dropdown">
-								<li><a href="/content/edit/articles/">Документы и статьи</a></li>
-								<li><a href="/content/edit/categories/">Категории</a></li>
-								<li><a href="/content/edit/doc-types/">Типы документов</a></li>
-								<li><a href="/content/edit/languages/">Языки</a></li>
+								<li><a href="/articles/">Документы и статьи</a></li>
+								<li><a href="/categories/">Категории</a></li>
+								<li><a href="/doc-types/">Типы документов</a></li>
+								<li><a href="/languages/">Языки</a></li>
 							</ul>
 						</li>
 						{% endif %}
@@ -119,8 +146,7 @@
 
 <footer>
 <div class="row">
-<p>Сайт разрабатывается.</p>
-<p>&copy;&nbsp;<a href="mailto:root@anodos.ru">Андрей Безпалов</a>
+	<div class="small-12 columns text-center">&copy;&nbsp;<a href="mailto:root@anodos.ru">Андрей Безпалов</a></div>
 </div>
 </footer>
 
@@ -134,11 +160,10 @@
 <script src="/static/js/foundation.min.js"></script>
 <script src="/static/js/foundation/foundation.topbar.js"></script>
 <script src="/static/js/foundation/foundation.reveal.js"></script>
+
 <script>
 $(document).foundation();
-
 {% include "project/js/login.js" %}
-
 </script>
 
 {% block js-content %}

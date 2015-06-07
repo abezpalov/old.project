@@ -11,10 +11,11 @@ urlpatterns = patterns('',
 	# Article
 	# ex: /article/58/
 	url(r'^article/(?P<article_id>[0-9]+)/$', 'project.views.article', name='article'),
+	# ex: /articles/
+	url(r'^articles/$', 'project.views.articles', name='articles'),
 
-	# Content Edit Lists
-	url(r'^content/edit/articles/$', 'project.views.editArticles', name='editArticles'),
-	url(r'^content/edit/categories/$', 'project.views.editCategories', name='editCategories'),
+	# Content Lists
+	url(r'^content/categories/$', 'project.views.editCategories', name='editCategories'),
 
 	# Ajax Article
 	url(r'^content/ajax/get-article/$', 'project.views.ajaxGetArticle', name='ajaxGetArticle'),

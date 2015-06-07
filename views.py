@@ -31,7 +31,7 @@ def article(request, article_id = None):
 	return render(request, 'project/article.html', locals())
 
 
-def editArticles(request):
+def articles(request):
 	"Представление: список статей (с возможностью редактирования)."
 
 	# Импортируем
@@ -48,7 +48,7 @@ def editArticles(request):
 			category.name = '— ' * category.level + category.name
 		languages  = Language.objects.all()
 
-	return render(request, 'project/edit-articles.html', locals())
+	return render(request, 'project/articles.html', locals())
 
 
 def editCategories(request):
