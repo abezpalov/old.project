@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def home(request):
-	"Представление: Главная страница."
+	"Представление: главная страница."
 
 	# Импортируем
 	from project.models import Article
@@ -14,11 +14,11 @@ def home(request):
 	# Получаем списки объектов
 	articles = Article.objects.all().filter(state = True).filter(on_main = True)
 
-	return render(request, 'content/home.html', locals())
+	return render(request, 'project/home.html', locals())
 
 
 def article(request, article_id = None):
-	"Представление: Статья."
+	"Представление: статья."
 
 	# Импортируем
 	from project.models import Article
@@ -28,16 +28,16 @@ def article(request, article_id = None):
 	except Article.DoesNotExist:
 		return HttpResponse(status = 404)
 
-	return render(request, 'content/article.html', locals())
+	return render(request, 'project/article.html', locals())
 
 
 def editArticles(request):
-	"Представление: Список статей (с возможностью редактирования)."
+	"Представление: список статей (с возможностью редактирования)."
 
 	# Импортируем
 	from project.models import Article, Category, Language
 
-	# Проверяем права доступа
+	# Проверяем права доступа TODO TEST
 	if request.user.has_perm('project.change_article'):
 
 		# Получаем списки объектов
@@ -48,11 +48,11 @@ def editArticles(request):
 			category.name = '— ' * category.level + category.name
 		languages  = Language.objects.all()
 
-	return render(request, 'content/edit-articles.html', locals())
+	return render(request, 'project/edit-articles.html', locals())
 
 
 def editCategories(request):
-	"Представление: Список категорий (с возможностью редактирования)."
+	"Представление: список категорий (с возможностью редактирования)."
 
 	# Проверяем права доступа
 	if request.user.has_perm('project.change_category'):
@@ -66,11 +66,11 @@ def editCategories(request):
 		for category in categories:
 			category.name = '— ' * category.level + category.name
 
-	return render(request, 'content/edit-categories.html', locals())
+	return render(request, 'project/edit-categories.html', locals())
 
 
-def getCategoryTree(tree, parent = None):
-	"Функция: Дерево категорий (используется рекурсия)."
+def getCategoryTree(tree, parent = None): # TODO Избавиться от рекурсии
+	"Функция: дерево категорий (используется рекурсия)."
 
 	# Импортируем
 	from project.models import Category
@@ -88,7 +88,7 @@ def getCategoryTree(tree, parent = None):
 
 
 def login_view(request):
-	"Представление: Авторизация пользователя с перенаправлением."
+	"Представление: авторизация пользователя с перенаправлением."
 
 	if request.method == 'POST':
 		username = request.POST.get('username')
@@ -113,7 +113,7 @@ def login_view(request):
 
 
 def logout_view(request):
-	"Представление: Выход пользователя с перенаправлением."
+	"Представление: выход пользователя с перенаправлением."
 
 	if request.method == 'POST':
 		redirect_url = request.POST.get('redirect')
@@ -125,7 +125,7 @@ def logout_view(request):
 
 
 def ajaxGetArticle(request):
-	"AJAX-представление: Получение статьи."
+	"AJAX-представление: получение данных статьи."
 
 	# Импортируем
 	import json
@@ -133,7 +133,10 @@ def ajaxGetArticle(request):
 
 	# Проверяем права доступа
 	if not request.user.has_perm('project.change_article'):
-		return HttpResponse(status = 403)
+		result = {
+			'status': 'alert',
+			'message': 'Ошибка 403: отказано в доступе.'}
+		return HttpResponse(json.dumps(result), 'application/javascript')
 
 	# Получаем объект
 	try:
@@ -147,7 +150,7 @@ def ajaxGetArticle(request):
 
 		result = {
 			'status': 'success',
-			'message': 'Данные продукта получены.',
+			'message': 'Данные статьи получены.',
 			'article_id': article.id,
 			'article_title': article.title,
 			'article_content': article.content,
@@ -172,7 +175,7 @@ def ajaxGetArticle(request):
 
 
 def ajaxSaveArticle(request):
-	"AJAX-представление: Сохранение статьи."
+	"AJAX-представление: сохранение статьи."
 
 	# Импортируем
 	import json
@@ -288,7 +291,7 @@ def ajaxSaveArticle(request):
 
 
 def ajaxAddCategory(request):
-	"AJAX-представление: Добавление категории."
+	"AJAX-представление: добавление категории."
 
 	# Импортируем
 	from project.models import Category
@@ -363,7 +366,7 @@ def ajaxAddCategory(request):
 
 
 def ajaxSwitchCategoryState(request):
-	"AJAX-представление: Изменение статуса категории."
+	"AJAX-представление: изменение статуса категории."
 
 	# Импортируем
 	from project.models import Category
@@ -398,7 +401,7 @@ def ajaxSwitchCategoryState(request):
 
 
 def ajaxSaveCategory(request):
-	"AJAX-представление: Сохранение категории."
+	"AJAX-представление: сохранение категории."
 
 	# Импортируем
 	from project.models import Category
@@ -431,7 +434,7 @@ def ajaxSaveCategory(request):
 
 
 def ajaxTrashCategory(request):
-	"AJAX-представление: Удаление категории."
+	"AJAX-представление: удаление категории."
 
 	# Импортируем
 	from project.models import Category

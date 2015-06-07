@@ -1,7 +1,7 @@
-{% if perms.project.change_article %}
+{% if perms.project.add_article %}
 
 // Открытие окна редактирования статьи (новая)
-$("body").delegate("button[data-do*='open-new-article']", "click", function(){
+$("body").delegate("[data-do*='open-new-article']", "click", function(){
 
 	// Заполняем значение полей
 	$('#edit-article-id').val('0');
@@ -24,8 +24,13 @@ $("body").delegate("button[data-do*='open-new-article']", "click", function(){
 	return false;
 });
 
+{% endif %}
+
+{% if perms.project.change_article %}
+
+
 // Открытие окна редактирования статьи (существующая)
-$("body").delegate("a[data-do*='open-edit-article']", "click", function(){
+$("body").delegate("[data-do*='open-edit-article']", "click", function(){
 
 	// Получаем информацию о статье
 	$.post("/content/ajax/get-article/", {
@@ -74,8 +79,13 @@ $("body").delegate("a[data-do*='open-edit-article']", "click", function(){
 	return false;
 });
 
-// Сохранение элемента
-$("body").delegate("button[data-do*='edit-article-save']", "click", function(){
+{% endif %}
+
+{% if perms.project.add_article or perms.project.change_article %}
+
+
+// Сохранение статьи
+$("body").delegate("[data-do*='edit-article-save']", "click", function(){
 	$.post("/content/ajax/save-article/", {
 		id:                  $('#edit-article-id').val(),
 		article_title:       $('#edit-article-title').val(),
@@ -118,20 +128,26 @@ $("body").delegate("button[data-do*='edit-article-save']", "click", function(){
 });
 
 // Отмена редактирования статьи
-$("body").delegate("button[data-do*='edit-article-cancel']", "click", function(){
+$("body").delegate("[data-do*='edit-article-cancel']", "click", function(){
 	$('#modal-edit-article').foundation('reveal', 'close');
 	return false;
 });
 
+{% endif %}
+
+{% if perms.project.delete_article %}
+
+
 // Открытие модального окна удаления статьи
-$("body").delegate("button[data-do*='open-article-trash']", "click", function(){
+$("body").delegate("[data-do*='open-article-trash']", "click", function(){
 	$('#trash-article-id').val($(this).data('id'));
 	$('#modal-trash-article').foundation('reveal', 'open');
 	return false;
 });
 
+
 // Удаление статьи
-$("body").delegate("button[data-do*='trash-article']", "click", function(){
+$("body").delegate("[data-do*='trash-article']", "click", function(){
 	$.post("/content/ajax/trash-article/", {
 		id: $('#trash-article-id').val(),
 		csrfmiddlewaretoken: '{{ csrf_token }}'
@@ -154,4 +170,44 @@ $("body").delegate("button[data-do*='trash-article']", "click", function(){
 	}, "json");
 	return false;
 });
+
+
+// Отмена удаления статьи
+$("body").delegate("[data-do*='trash-article-cancel']", "click", function(){
+	$('#trash-article-id').val('0');
+	$('#modal-trash-article').foundation('reveal', 'close');
+	return false;
+});
+
+{% endif %}
+
+{% if perms.project.change_article %}
+
+
+// Смена статуса
+$("body").delegate("[data-do*='switch-article-state']", "click", function(){
+	$.post("/content/ajax/switch-article-state/", {
+		id: $(this).data('id'),
+		state: $(this).prop('checked'),
+		csrfmiddlewaretoken: '{{ csrf_token }}'
+	},
+	function(data) {
+		if (null != data.status) {
+			var notification = new NotificationFx({
+				wrapper : document.body,
+				message : '<p>' + data.message + '</p>',
+				layout : 'growl',
+				effect : 'genie',
+				type : data.status,
+				ttl : 3000,
+				onClose : function() { return false; },
+				onOpen : function() { return false; }
+			});
+			notification.show();
+			setTimeout(function () {location.reload();}, 3000);
+		}
+	}, "json");
+	return true;
+});
+
 {% endif %}

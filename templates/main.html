@@ -19,7 +19,7 @@
 	<!-- Логотип -->
 	<div class="row hide-for-small-only">
 		<div class="medium-6 large-4 columns"><h1><a href="/">Anodos</a></h1></div>
-		<div class="medium-6 large-8 columns text-right">Сайт разрабатывается, пожалуйста, по всем вопросам <br/>связывайтесь по электронной почте: <a href="mailto:root@anodos.ru">root@anodos.ru</a></div>
+		<div class="medium-6 large-8 columns text-right">&nbsp;</div>
 	</div>
 
 	<!-- Панель навигации -->
@@ -118,83 +118,13 @@
 </main>
 
 <footer>
-	<div class="row">
-	Подвал
-	</div>
+<div class="row">
+<p>Сайт разрабатывается.</p>
+<p>&copy;&nbsp;<a href="mailto:root@anodos.ru">Андрей Безпалов</a>
+</div>
 </footer>
 
-{% if user.is_authenticated %}
-<!-- Модальное окно профиля пользователя -->
-<div id="profileModal" class="reveal-modal large" data-reveal>
-	<p>{{ perms.catalog }}</p>
-	<form action="/logout/" method="post">
-		<input type="hidden" name="redirect" value="{{ request.path }}">
-		<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-		<button class="alert"><i class="fa fa-unlock"></i>&nbsp;Выйти</button>
-		<button data-do="profile-modal-cancel" class="secondary">Отмена</button>
-	</form>
-	<a class="close-reveal-modal">&#215;</a>
-</div>
-{% else %}
-<!-- Модальное окно авторизации -->
-<div id="loginModal" class="reveal-modal large" data-reveal>
-	<dl class="tabs" data-tab>
-		<dd class="active"><a href="#loginPanel">Войти</a></dd>
-		<dd><a href="#registerPanel">Зарегистрироваться</a></dd>
-	</dl>
-	<div class="tabs-content">
-		<div class="content active" id="loginPanel">
-			<form action="/login/" method="post">
-				<fieldset>
-					<legend>Войти</legend>
-					<label>Имя пользователя
-						<input name="username" type="text" placeholder="Login">
-					</label>
-					<label>Пароль
-						<input name="password" type="password" placeholder="Password">
-					</label>
-					<input type="hidden" name="redirect" value="{{ request.path }}">
-					<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-				</fieldset>
-				<p><a href="/login/restore-password/">Восстановить пароль.</a></p>
-				<button class="button"><i class="fa fa-lock"></i>&nbsp;Войти</button>
-				<button data-do="login-modal-cancel" class="secondary">Отмена</button>
-			</form>
-		</div>
-		<div class="content" id="registerPanel">
-			<form action="/register/" method="post">
-				<fieldset>
-					<legend>Зарегистрироваться</legend>
-					<label>Имя пользователя
-						<input name="username" type="text" placeholder="Login">
-					</label>
-					<label>Пароль
-						<input name="password" type="password" placeholder="Password">
-					</label>
-					<label>Повторите пароль
-						<input name="password_double" type="password" placeholder="Password">
-					</label>
-					<label>Электронная почта
-						<input name="email" type="email" placeholder="your@email.ru">
-					</label>
-					<label>Имя
-						<input name="firstname" type="text" placeholder="First Name">
-					</label>
-					<label>Фамилия
-						<input name="lastname" type="text" placeholder="Last Name">
-					</label>
-					<input type="hidden" name="redirect" value="{{ request.path }}">
-					<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-				</fieldset>
-				<p><a href="/login/license/">Лицензионное соглашение.</a></p>
-				<button>Зарегистрироваться</button>
-				<button data-do="login-modal-cancel" class="secondary">Отмена</button>
-			</form>
-		</div>
-	</div>
-	<a class="close-reveal-modal">&#215;</a>
-</div>
-{% endif %}
+{% include "project/modal/login.html" %}
 
 <script src="/static/js/vendor/jquery.js"></script>
 <script src="/static/js/vendor/fastclick.js"></script>
@@ -205,7 +135,10 @@
 <script src="/static/js/foundation/foundation.topbar.js"></script>
 <script src="/static/js/foundation/foundation.reveal.js"></script>
 <script>
-{% include "main.js" %}
+$(document).foundation();
+
+{% include "project/js/login.js" %}
+
 </script>
 
 {% block js-content %}
