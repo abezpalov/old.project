@@ -91,6 +91,15 @@
 
 							</ul>
 						</li>
+						{% if user.is_authenticated %}
+						<li class="has-dropdown">
+							<a href="#">Тендеры</a>
+							<ul class="dropdown">
+								<li><a href="/tenders/updaters/">Загрузчики</a></li>
+								<li><a href="/tenders/regions/">Регионы</a></li>
+							</ul>
+						</li>
+						{% endif %}
 						{% if perms.project.change_article %}
 						<li class="has-dropdown">
 							<a href="#">Контент</a>
