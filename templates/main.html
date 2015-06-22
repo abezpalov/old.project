@@ -53,6 +53,26 @@
 								<li><a href="/catalog/orders/">Заказы</a></li>
 								{% endif %}
 
+								{% if perms.catalog.add_updater or perms.catalog.change_updater %}
+								<li><a href="/catalog/updaters/">Загрузчики</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_category or perms.catalog.change_category %}
+								<li><a href="/catalog/categories/">Категории товаров</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_categorysynonym or perms.catalog.change_categorysynonym %}
+								<li><a href="/catalog/category-synonyms/">Синонимы категорий</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_vendor or perms.catalog.change_vendor %}
+								<li><a href="/catalog/vendors/">Производители</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_vendorsynonym or perms.catalog.change_vendorsynonym %}
+								<li><a href="/catalog/vendor-synonyms/">Синонимы производителей</a></li>
+								{% endif %}
+
 								{% if perms.catalog.add_distributor or perms.catalog.change_distributor %}
 								<li><a href="/catalog/distributors/">Поставщики</a></li>
 								{% endif %}
@@ -61,32 +81,12 @@
 								<li><a href="/catalog/stocks/">Склады</a></li>
 								{% endif %}
 
-								{% if perms.catalog.add_vendor or perms.catalog.change_vendor %}
-								<li><a href="/catalog/vendors/">Производители</a></li>
-								{% endif %}
-
-								{% if perms.catalog.add_category or perms.catalog.change_category %}
-								<li><a href="/catalog/categories/">Категории товаров</a></li>
-								{% endif %}
-
 								{% if perms.catalog.add_pricetype or perms.catalog.change_pricetype %}
 								<li><a href="/catalog/price-types/">Типы цен и наценки</a></li>
 								{% endif %}
 
 								{% if perms.catalog.add_currency or perms.catalog.change_currency %}
 								<li><a href="/catalog/currencies/">Валюты и их курсы</a></li>
-								{% endif %}
-
-								{% if perms.catalog.add_updater or perms.catalog.change_updater %}
-								<li><a href="/catalog/updaters/">Загрузчики</a></li>
-								{% endif %}
-
-								{% if perms.catalog.add_vendorsynonym or perms.catalog.change_vendorsynonym %}
-								<li><a href="/catalog/vendor-synonyms/">Синонимы производителей</a></li>
-								{% endif %}
-
-								{% if perms.catalog.add_categorysynonym or perms.catalog.change_categorysynonym %}
-								<li><a href="/catalog/category-synonyms/">Синонимы категорий</a></li>
 								{% endif %}
 
 							</ul>
