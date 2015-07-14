@@ -11,26 +11,10 @@
 
 <div class="row">
 	<div class="large-8 medium-6 columns">
-		<iframe src="http://ipeye.ru/ipeye_service/api/api.php?dev=TD4BdzqdFhmc3VQEgZjzCmp95V0D5P&tupe=rtmp&autoplay=0&logo=1" width="800" height="600" frameBorder="0" seamless="seamless">Ваш браузер не поддерживает фреймы!</iframe>
-		<div class="fotorama"
-			data-transition="crossfade"
-			data-arrows="true"
-			data-click="false"
-			data-swipe="false"
-			data-trackpad="true">
-			<img src="media/test/1.jpg" data-caption="1">
-			<img src="media/test/2.jpg" data-caption="2">
-			<img src="media/test/3.jpg" data-caption="3">
-			<img src="media/test/4.jpg" data-caption="4">
-			<img src="media/test/5.jpg" data-caption="5">
-			<img src="media/test/6.jpg" data-caption="6">
-			<img src="media/test/7.jpg" data-caption="7">
-			<img src="media/test/8.jpg" data-caption="8">
-		</div>
 		{% for article in articles %}
 		<div>
 			<h3><a href="article/{{ article.id }}">{{ article.title}}</a></h3>
-			<p>{{ article.intro}}</p>
+			<p>{% autoescape off %}{{ article.intro}}{% endautoescape %}</p>
 		</div>
 		{% endfor %}
 	</div>
