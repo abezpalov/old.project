@@ -151,11 +151,13 @@ class LogManager(models.Manager):
 
 # Log
 class Log(models.Model):
+
 	subject     = models.CharField(max_length=100)
 	channel     = models.CharField(max_length=100)
 	title       = models.CharField(max_length=100)
 	description = models.TextField()
 	created     = models.DateTimeField()
+
 	objects     = LogManager()
 
 	def __str__(self):

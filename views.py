@@ -461,3 +461,18 @@ def ajaxTrashCategory(request):
 
 	# Возвращаем ответ
 	return HttpResponse(json.dumps(result), 'application/javascript')
+
+
+def logs(request):
+	"Представление: логи."
+
+	# Импортируем
+	from project.models import Log
+
+	# Проверяем права доступа
+	if request.user.has_perm('project.change_log'):
+
+		# Получаем списки объектов
+		logs = Log.objects.all().order_by('-created')
+
+	return render(request, 'project/logs.html', locals())
