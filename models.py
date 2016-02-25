@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+
 # Category
 class Category(models.Model):
 	name        = models.CharField(max_length=100)
@@ -22,11 +23,12 @@ class Category(models.Model):
 	class Meta:
 		ordering = ['order']
 
+
 # Doc Type
 class DocType(models.Model):
-	name     = models.CharField(max_length=100)
-	alias    = models.CharField(max_length=100)
-	state    = models.BooleanField(default=True)
+	name         = models.CharField(max_length=100)
+	alias        = models.CharField(max_length=100)
+	state        = models.BooleanField(default=True)
 	created      = models.DateTimeField()
 	created_by   = models.CharField(max_length=100, null=True, default=None)
 	modified     = models.DateTimeField()
@@ -37,12 +39,13 @@ class DocType(models.Model):
 
 	class Meta:
 		ordering = ['alias']
+
 
 # Language
 class Language(models.Model):
-	name     = models.CharField(max_length=100)
-	alias    = models.CharField(max_length=100)
-	state    = models.BooleanField(default=True)
+	name         = models.CharField(max_length=100)
+	alias        = models.CharField(max_length=100)
+	state        = models.BooleanField(default=True)
 	created      = models.DateTimeField()
 	created_by   = models.CharField(max_length=100, null=True, default=None)
 	modified     = models.DateTimeField()
@@ -53,6 +56,22 @@ class Language(models.Model):
 
 	class Meta:
 		ordering = ['alias']
+
+
+# License
+class License(models.Model):
+	name         = models.CharField(max_length=100)
+	alias        = models.CharField(max_length=100)
+	description  = models.TextField()                                           # Описание
+	state        = models.BooleanField(default=True)
+	created      = models.DateTimeField()
+	created_by   = models.CharField(max_length=100, null=True, default=None)
+	modified     = models.DateTimeField()
+	modified_by  = models.CharField(max_length=100, null=True, default=None)
+
+	def __str__(self):
+		return self.title
+
 
 # Article
 class Article(models.Model):
@@ -67,6 +86,8 @@ class Article(models.Model):
 
 	category     = models.ForeignKey(Category, null=True, default=None)         # Категория
 	language     = models.ForeignKey(Language, null=True, default=None)         # Язык
+	license      = models.ForeignKey(License,  null=True, default=None)         # Лицензия
+	copyright    = models.CharField(max_length=512, null=True)                  # Копирайт
 
 	source       = models.CharField(max_length=512, null=True)                  # Источник
 	source_url   = models.CharField(max_length=512, null=True)                  # Ссылка на источник
@@ -89,6 +110,7 @@ class Article(models.Model):
 	class Meta:
 		ordering = ['-created']
 
+
 # Document
 class Document(models.Model):
 	title        = models.CharField(max_length=100)                             # Заголовок
@@ -102,6 +124,8 @@ class Document(models.Model):
 
 	category     = models.ForeignKey(Category, null=True, default=None)         # Категория
 	language     = models.ForeignKey(Language, null=True, default=None)         # Язык
+	license      = models.ForeignKey(License,  null=True, default=None)         # Лицензия
+	copyright    = models.CharField(max_length=512, null=True)                  # Копирайт
 
 	source       = models.CharField(max_length=512, null=True)                  # Источник
 	source_url   = models.CharField(max_length=512, null=True)                  # Ссылка на источник
@@ -118,6 +142,7 @@ class Document(models.Model):
 	def __str__(self):
 		return self.title
 
+
 # Document Collection
 class DocumentCollection(models.Model):
 	title        = models.CharField(max_length=100)
@@ -128,11 +153,14 @@ class DocumentCollection(models.Model):
 	modified     = models.DateTimeField()
 	modified_by  = models.CharField(max_length=100, null=True, default=None)
 
-	to_article   = models.ManyToManyField(Article,  db_table='project_collection_to_article')
-	to_document  = models.ManyToManyField(Document, db_table='project_collection_to_document')
+	to_article   = models.ManyToManyField(
+		Article,  db_table='project_collection_to_article')
+	to_document  = models.ManyToManyField(
+		Document, db_table='project_collection_to_document')
 
 	def __str__(self):
 		return self.title
+
 
 # Log manager
 class LogManager(models.Manager):
@@ -148,6 +176,7 @@ class LogManager(models.Manager):
 			created     = timezone.now())
 		log.save()
 		return log
+
 
 # Log
 class Log(models.Model):
