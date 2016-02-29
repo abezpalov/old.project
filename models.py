@@ -4,7 +4,8 @@ from django.utils import timezone
 
 # Category
 class Category(models.Model):
-	name        = models.CharField(max_length=100)
+	name        = models.TextField()
+	name_search = models.CharField(max_length=512)
 	alias       = models.CharField(max_length=100)
 	description = models.TextField()
 	parent      = models.ForeignKey('self', null=True, default=None)
@@ -26,13 +27,14 @@ class Category(models.Model):
 
 # Doc Type
 class DocType(models.Model):
-	name         = models.CharField(max_length=100)
-	alias        = models.CharField(max_length=100)
-	state        = models.BooleanField(default=True)
-	created      = models.DateTimeField()
-	created_by   = models.CharField(max_length=100, null=True, default=None)
-	modified     = models.DateTimeField()
-	modified_by  = models.CharField(max_length=100, null=True, default=None)
+	name        = models.TextField()
+	name_search = models.CharField(max_length=512)
+	alias       = models.CharField(max_length=100)
+	state       = models.BooleanField(default=True)
+	created     = models.DateTimeField()
+	created_by  = models.CharField(max_length=100, null=True, default=None)
+	modified    = models.DateTimeField()
+	modified_by = models.CharField(max_length=100, null=True, default=None)
 
 	def __str__(self):
 		return self.alias
@@ -43,13 +45,14 @@ class DocType(models.Model):
 
 # Language
 class Language(models.Model):
-	name         = models.CharField(max_length=100)
-	alias        = models.CharField(max_length=100)
-	state        = models.BooleanField(default=True)
-	created      = models.DateTimeField()
-	created_by   = models.CharField(max_length=100, null=True, default=None)
-	modified     = models.DateTimeField()
-	modified_by  = models.CharField(max_length=100, null=True, default=None)
+	name        = models.TextField()
+	name_search = models.CharField(max_length=512)
+	alias       = models.CharField(max_length=100)
+	state       = models.BooleanField(default=True)
+	created     = models.DateTimeField()
+	created_by  = models.CharField(max_length=100, null=True, default=None)
+	modified    = models.DateTimeField()
+	modified_by = models.CharField(max_length=100, null=True, default=None)
 
 	def __str__(self):
 		return self.alias
@@ -60,22 +63,27 @@ class Language(models.Model):
 
 # License
 class License(models.Model):
-	name         = models.CharField(max_length=100)
-	alias        = models.CharField(max_length=100)
-	description  = models.TextField()                                           # Описание
-	state        = models.BooleanField(default=True)
-	created      = models.DateTimeField()
-	created_by   = models.CharField(max_length=100, null=True, default=None)
-	modified     = models.DateTimeField()
-	modified_by  = models.CharField(max_length=100, null=True, default=None)
+	name        = models.TextField()
+	name_search = models.CharField(max_length=512)
+	alias       = models.CharField(max_length=100)
+	description = models.TextField()                                           # Описание
+	state       = models.BooleanField(default=True)
+	created     = models.DateTimeField()
+	created_by  = models.CharField(max_length=100, null=True, default=None)
+	modified    = models.DateTimeField()
+	modified_by = models.CharField(max_length=100, null=True, default=None)
 
 	def __str__(self):
-		return self.title
+		return self.name
+
+	class Meta:
+		ordering = ['alias']
 
 
 # Article
 class Article(models.Model):
-	title        = models.CharField(max_length=100)                             # Заголовок
+	title        = models.TextField()                                           # Заголовок
+	title_search = models.CharField(max_length=512)
 	alias        = models.CharField(max_length=100, null=True)                  # Псевдоним (служебное поле)
 	patch        = models.CharField(max_length=512, null=True)                  # Путь
 	thumb_src    = models.CharField(max_length=512, null=True)                  # Ссылка на изображение-предпросмотр
@@ -113,7 +121,8 @@ class Article(models.Model):
 
 # Document
 class Document(models.Model):
-	title        = models.CharField(max_length=100)                             # Заголовок
+	title        = models.TextField()                                           # Заголовок
+	title_search = models.CharField(max_length=512)
 	alias        = models.CharField(max_length=100, null=True)                  # Псевдоним (служебное поле)
 	patch        = models.CharField(max_length=512, null=True)                  # Путь
 	src          = models.CharField(max_length=512, null=True)                  # Ссылка на расположение
@@ -142,10 +151,14 @@ class Document(models.Model):
 	def __str__(self):
 		return self.title
 
+	class Meta:
+		ordering = ['-created']
+
 
 # Document Collection
 class DocumentCollection(models.Model):
-	title        = models.CharField(max_length=100)
+	title        = models.TextField()                                           # Заголовок
+	title_search = models.CharField(max_length=512)
 	alias        = models.CharField(max_length=100, null=True)
 	state        = models.BooleanField(default=True)
 	created      = models.DateTimeField()
@@ -161,11 +174,13 @@ class DocumentCollection(models.Model):
 	def __str__(self):
 		return self.title
 
+	class Meta:
+		ordering = ['-created']
+
 
 # Log manager
 class LogManager(models.Manager):
 
-	# TODO add
 	def add(self, subject, channel, title, description):
 
 		log = Log(
