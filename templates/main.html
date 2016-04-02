@@ -89,6 +89,15 @@
 								<li><a href="/catalog/currencies/">Валюты и их курсы</a></li>
 								{% endif %}
 
+								{% if perms.catalog.add_parameter or perms.catalog.change_parameter %}
+								<li><a href="/catalog/parameters/">Параметры</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_parametersynonym or perms.catalog.change_parametersynonym %}
+								<li><a href="/catalog/parameter-synonyms/">Синонимы параметров</a></li>
+								{% endif %}
+
+
 							</ul>
 						</li>
 						<li class="has-dropdown">

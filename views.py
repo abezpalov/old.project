@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login, logout
 
@@ -95,11 +95,12 @@ def login_view(request):
 		password = request.POST.get('password')
 		redirect_url = request.POST.get('redirect')
 		if not redirect_url: redirect_url = '/'
+
 		user = authenticate(username=username, password=password)
 		if user is not None:
 			if user.is_active:
 				login(request, user)
-				return redirect(redirect_url)
+				return HttpResponseRedirect(redirect_url)
 			else:
 				# TODO Сделать человечный ответ
 				# Пользователь заблокирован
@@ -119,7 +120,49 @@ def logout_view(request):
 		redirect_url = request.POST.get('redirect')
 		if not redirect_url: redirect_url = '/'
 		logout(request)
-		return redirect(redirect_url)
+		return HttpResponseRedirect(redirect_url)
+	else:
+		return HttpResponse(status = 400)
+
+
+def register(request):
+	"Представление: регистрация пользователя с перенаправлением."
+
+	from django.contrib.auth.models import User
+
+	if request.method == 'POST':
+		username  = request.POST.get('username')
+		password1 = request.POST.get('password1')
+		password2 = request.POST.get('password2')
+		email     = request.POST.get('email')
+		firstname = request.POST.get('firstname')
+		lastname  = request.POST.get('lastname')
+
+		redirect_url = request.POST.get('redirect')
+		if not redirect_url: redirect_url = '/'
+
+		# TODO Проверить вводные данные
+
+		user = User.objects.create_user(
+			username   = username,
+			password   = password1,
+			email      = email,
+			first_name = firstname,
+			last_name  = lastname)
+
+		user = authenticate(username=username, password=password1)
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect(redirect_url)
+			else:
+				# TODO Сделать человечный ответ
+				# Пользователь заблокирован
+				return HttpResponse(status = 401)
+		else:
+			# TODO Сделать человечный ответ
+			# Пользователь неавторизован
+			return HttpResponse(status = 401)
 	else:
 		return HttpResponse(status = 400)
 

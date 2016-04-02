@@ -30,4 +30,6 @@ urlpatterns = patterns('',
 	# Login
 	url(r'^login/$', 'project.views.login_view', name='login_view'),
 	url(r'^logout/$', 'project.views.logout_view', name='logout_view'),
+	url(r'^register/$', 'project.views.register', name='register'),
+
 )
