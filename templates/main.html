@@ -93,6 +93,10 @@
 								<li><a href="/catalog/parameters/">Параметры</a></li>
 								{% endif %}
 
+								{% if perms.catalog.add_parametertype or perms.catalog.change_parametertype %}
+								<li><a href="/catalog/parameter-types/">Типы данных параметров</a></li>
+								{% endif %}
+
 								{% if perms.catalog.add_parametersynonym or perms.catalog.change_parametersynonym %}
 								<li><a href="/catalog/parameter-synonyms/">Синонимы параметров</a></li>
 								{% endif %}
