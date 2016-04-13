@@ -62,7 +62,7 @@
 								{% endif %}
 
 								{% if perms.catalog.add_categorysynonym or perms.catalog.change_categorysynonym %}
-								<li><a href="/catalog/category-synonyms/">Синонимы категорий</a></li>
+								<li><a href="/catalog/categorysynonyms/">Синонимы категорий</a></li>
 								{% endif %}
 
 								{% if perms.catalog.add_vendor or perms.catalog.change_vendor %}
@@ -70,7 +70,7 @@
 								{% endif %}
 
 								{% if perms.catalog.add_vendorsynonym or perms.catalog.change_vendorsynonym %}
-								<li><a href="/catalog/vendor-synonyms/">Синонимы производителей</a></li>
+								<li><a href="/catalog/vendorsynonyms/">Синонимы производителей</a></li>
 								{% endif %}
 
 								{% if perms.catalog.add_distributor or perms.catalog.change_distributor %}
@@ -82,7 +82,7 @@
 								{% endif %}
 
 								{% if perms.catalog.add_pricetype or perms.catalog.change_pricetype %}
-								<li><a href="/catalog/price-types/">Типы цен и наценки</a></li>
+								<li><a href="/catalog/pricetypes/">Типы цен и наценки</a></li>
 								{% endif %}
 
 								{% if perms.catalog.add_currency or perms.catalog.change_currency %}
@@ -94,13 +94,20 @@
 								{% endif %}
 
 								{% if perms.catalog.add_parametertype or perms.catalog.change_parametertype %}
-								<li><a href="/catalog/parameter-types/">Типы данных параметров</a></li>
+								<li><a href="/catalog/parametertypes/">Типы данных параметров</a></li>
 								{% endif %}
 
 								{% if perms.catalog.add_parametersynonym or perms.catalog.change_parametersynonym %}
-								<li><a href="/catalog/parameter-synonyms/">Синонимы параметров</a></li>
+								<li><a href="/catalog/parametersynonyms/">Синонимы параметров</a></li>
 								{% endif %}
 
+								{% if perms.catalog.add_parametervalue or perms.catalog.change_parametervalue %}
+								<li><a href="/catalog/parametervalues/">Значения параметров</a></li>
+								{% endif %}
+
+								{% if perms.catalog.add_parametervaluesynonym or perms.catalog.change_parametervaluesynonym %}
+								<li><a href="/catalog/parametervaluesynonyms/">Синонимы значений параметров</a></li>
+								{% endif %}
 
 							</ul>
 						</li>
