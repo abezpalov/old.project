@@ -109,6 +109,10 @@
 								<li><a href="/catalog/parametervaluesynonyms/">Синонимы значений параметров</a></li>
 								{% endif %}
 
+								{% if perms.catalog.add_unit or perms.catalog.change_unit %}
+								<li><a href="/catalog/units/">Единицы измерения</a></li>
+								{% endif %}
+
 							</ul>
 						</li>
 						<li class="has-dropdown">

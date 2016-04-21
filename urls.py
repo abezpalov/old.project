@@ -1,35 +1,34 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+import project.views
+
 admin.autodiscover()
 
-urlpatterns = patterns('',
-	url(r'^$', 'project.views.home', name='home'),
+urlpatterns = [
+
+	url(r'^$', project.views.home),
 	url(r'^catalog/', include('catalog.urls')),
 	url(r'^tenders/', include('tenders.urls')),
 	url(r'^admin/', include(admin.site.urls)),
 
-	# Article
-	url(r'^articles/$', 'project.views.articles', name='articles'),
-	url(r'^article/(?P<article_id>[0-9]+)/$', 'project.views.article', name='article'),
-	# AJAX
-	url(r'^content/ajax/get-article/$', 'project.views.ajaxGetArticle', name='ajaxGetArticle'),
-	url(r'^content/ajax/save-article/$', 'project.views.ajaxSaveArticle', name='ajaxSaveArticle'),
+	url(r'^articles/$', project.views.articles),
+	url(r'^article/(?P<article_id>[0-9]+)/$', project.views.article),
 
-	# Category
-	url(r'^content/categories/$', 'project.views.editCategories', name='editCategories'),
-	# AJAX
-	url(r'^content/ajax/add-category/$', 'project.views.ajaxAddCategory', name='ajaxAddCategory'),
-	url(r'^content/ajax/save-category/$', 'project.views.ajaxSaveCategory', name='ajaxSaveCategory'),
-	url(r'^content/ajax/switch-category-state/$', 'project.views.ajaxSwitchCategoryState', name='ajaxSwitchCategoryState'),
-	url(r'^content/ajax/trash-category/$', 'project.views.ajaxTrashCategory', name='ajaxTrashCategory'),
+	url(r'^content/ajax/get-article/$', project.views.ajaxGetArticle),
+	url(r'^content/ajax/save-article/$', project.views.ajaxSaveArticle),
 
-	# Logs
-	url(r'^logs/$', 'project.views.logs', name='logs'),
+	url(r'^content/categories/$', project.views.editCategories),
 
-	# Login
-	url(r'^login/$', 'project.views.login_view', name='login_view'),
-	url(r'^logout/$', 'project.views.logout_view', name='logout_view'),
-	url(r'^register/$', 'project.views.register', name='register'),
+	url(r'^content/ajax/add-category/$', project.views.ajaxAddCategory),
+	url(r'^content/ajax/save-category/$', project.views.ajaxSaveCategory),
+	url(r'^content/ajax/switch-category-state/$', project.views.ajaxSwitchCategoryState),
+	url(r'^content/ajax/trash-category/$', project.views.ajaxTrashCategory),
 
-)
+	url(r'^logs/$', project.views.logs),
+
+	url(r'^login/$', project.views.login_view),
+	url(r'^logout/$', project.views.logout_view),
+	url(r'^register/$', project.views.register),
+
+]
