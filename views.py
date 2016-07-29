@@ -125,48 +125,6 @@ def logout_view(request):
 		return HttpResponse(status = 400)
 
 
-def register(request):
-	"Представление: регистрация пользователя с перенаправлением."
-
-	from django.contrib.auth.models import User
-
-	if request.method == 'POST':
-		username  = request.POST.get('username')
-		password1 = request.POST.get('password1')
-		password2 = request.POST.get('password2')
-		email     = request.POST.get('email')
-		firstname = request.POST.get('firstname')
-		lastname  = request.POST.get('lastname')
-
-		redirect_url = request.POST.get('redirect')
-		if not redirect_url: redirect_url = '/'
-
-		# TODO Проверить вводные данные
-
-		user = User.objects.create_user(
-			username   = username,
-			password   = password1,
-			email      = email,
-			first_name = firstname,
-			last_name  = lastname)
-
-		user = authenticate(username=username, password=password1)
-		if user is not None:
-			if user.is_active:
-				login(request, user)
-				return HttpResponseRedirect(redirect_url)
-			else:
-				# TODO Сделать человечный ответ
-				# Пользователь заблокирован
-				return HttpResponse(status = 401)
-		else:
-			# TODO Сделать человечный ответ
-			# Пользователь неавторизован
-			return HttpResponse(status = 401)
-	else:
-		return HttpResponse(status = 400)
-
-
 def ajaxGetArticle(request):
 	"AJAX-представление: получение данных статьи."
 
@@ -519,3 +477,191 @@ def logs(request):
 		logs = Log.objects.all().order_by('-created')
 
 	return render(request, 'project/logs.html', locals())
+
+
+
+
+def ajax_login(request):
+	"AJAX-представление: Login."
+
+	import json
+	import project.models
+
+	if (not request.is_ajax()) or (request.method != 'POST'):
+		return HttpResponse(status = 400)
+
+
+	username = request.POST.get('username')
+	password = request.POST.get('password')
+
+	user = authenticate(username = username, password = password)
+
+	if user is None:
+		result = {
+			'status'  : 'error',
+			'message' : 'Имя пользователя или пароль не корректны {} {}.'.format(username, password)}
+	elif user.is_active:
+		login(request, user)
+		result = {'status' : 'success'}
+	else:
+		result = {
+			'status'  : 'error',
+			'message' : 'Пользователь заблокирован.'}
+
+	return HttpResponse(json.dumps(result), 'application/javascript')
+
+
+def ajax_create_username(request):
+	"AJAX-представление: Create Username."
+
+	import json
+	import project.models
+	from django.contrib.auth.models import User
+
+	if (not request.is_ajax()) or (request.method != 'POST'):
+		return HttpResponse(status = 400)
+
+	firstname = request.POST.get('firstname').strip()
+	lastname  = request.POST.get('lastname').strip()
+
+	if firstname and lastname:
+
+		username = "{}.{}".format(firstname, lastname)
+
+		username = fix_username(username)
+
+		# TODO Проверить существование пользователя
+
+		result = {
+			'status'   : 'success',
+			'username' : username}
+
+	elif not firstname and not lastname:
+		result = {
+			'status'  : 'info',
+			'message' : 'Не указаны имя и фамилия.'}
+
+	elif not firstname:
+		result = {
+			'status'  : 'info',
+			'message' : 'Не указано имя.'}
+
+	elif not lastname:
+		result = {
+			'status'  : 'info',
+			'message' : 'Не указана фамилия.'}
+
+	return HttpResponse(json.dumps(result), 'application/javascript')
+
+
+# TODO
+def ajax_register(request):
+	"AJAX-представление: Register."
+
+	from django.contrib.auth.models import User
+
+	if request.method == 'POST':
+		username  = request.POST.get('username').strip()
+		password1 = request.POST.get('password1').strip()
+		password2 = request.POST.get('password2').strip()
+		email     = request.POST.get('email').strip()
+		firstname = request.POST.get('firstname').strip()
+		lastname  = request.POST.get('lastname').strip()
+
+		redirect_url = request.POST.get('redirect')
+		if not redirect_url: redirect_url = '/'
+
+		# TODO Проверить вводные данные
+
+		if not username:
+			result = {
+				'status'  : 'info',
+				'message' : 'Не указано имя пользователя.'}
+			return HttpResponse(json.dumps(result), 'application/javascript')
+
+		if not password1:
+			result = {
+				'status'  : 'info',
+				'message' : 'Не указан пароль.'}
+			return HttpResponse(json.dumps(result), 'application/javascript')
+
+		if password1 != password2:
+			result = {
+				'status'  : 'info',
+				'message' : 'Пароли не совпадают.'}
+			return HttpResponse(json.dumps(result), 'application/javascript')
+
+		if not email:
+			result = {
+				'status'  : 'info',
+				'message' : 'Не указана электронная почта (без неё мы не сможем восстановить учётную запись при необходимости).'}
+			return HttpResponse(json.dumps(result), 'application/javascript')
+
+
+
+
+
+		try:
+			user = User.objects.get(username = username)
+		except Exception:
+			user = User.objects.create_user(
+				username   = username,
+				password   = password1,
+				email      = email,
+				first_name = firstname,
+				last_name  = lastname)
+			user = authenticate(username=username, password=password1)
+			result = {'status'   : 'success'}
+		else:
+			result = {
+				'status'  : 'info',
+				'message' : 'Уже есть пользователь с таким именем.'}
+
+
+
+
+
+		if user is not None:
+			if user.is_active:
+				login(request, user)
+				return HttpResponseRedirect(redirect_url)
+			else:
+				# TODO Сделать человечный ответ
+				# Пользователь заблокирован
+				return HttpResponse(status = 401)
+		else:
+			# TODO Сделать человечный ответ
+			# Пользователь неавторизован
+			return HttpResponse(status = 401)
+	else:
+		return HttpResponse(status = 400)
+
+
+
+
+
+def fix_username(username):
+
+	import unidecode
+
+	username = username.lower()
+
+	username = unidecode.unidecode(username)
+
+	username = username.replace(' ', '_')
+	username = username.replace('&', 'and')
+	username = username.replace('\'', '')
+	username = username.replace('(', '')
+	username = username.replace(')', '')
+
+	username = username.strip()[:100]
+
+	return username
+
+
+
+
+
+
+
+

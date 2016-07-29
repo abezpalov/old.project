@@ -19,7 +19,13 @@
 	<!-- Логотип -->
 	<div class="row hide-for-small-only">
 		<div class="medium-6 large-4 columns"><h1><a href="/">Anodos</a></h1></div>
-		<div class="medium-6 large-8 columns text-right">Сайт разрабатывается.</div>
+		<div class="medium-6 large-8 columns text-right">
+			{% if user.is_authenticated %}
+			<p><a data-do = "open-profile">{{ user.first_name }} {{ user.last_name }}</a>, вы авторизованы.</p>
+			{% else %}
+			<p>Желаете <a data-do = "open-login">авторизоваться</a> или <a data-do = "open-register">зарегистрироваться</a>?</p>
+			{% endif %}
+		</div>
 	</div>
 
 	<!-- Панель навигации -->
@@ -144,16 +150,7 @@
 
 					<!-- Поиск и авторизация -->
 					<ul class="right">
-						<li class="has-form">
-							{% if user.is_authenticated %}
-							<button data-reveal-id="profileModal"><i class="fa fa-unlock"></i></button>
-							{% else %}
-							<button data-reveal-id="loginModal"><i class="fa fa-lock"></i><span class="hide-for-medium">&nbsp;Войти</span></button>
-							{% endif %}
-						</li>
-						<li class="divider"></li>
 						{% block search %}
-						<li class="divider"></li>
 						<li class="has-form">
 							<div class="row collapse">
 								<div class="large-8 small-9 columns">

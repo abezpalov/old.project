@@ -145,8 +145,10 @@ class Document(models.Model):
 	created_by   = models.CharField(max_length=100, null=True, default=None)
 	published    = models.DateTimeField(null=True, default=None)
 	published_by = models.CharField(max_length=100, null=True, default=None)
-	pub_from     = models.DateTimeField()
-	pub_to       = models.DateTimeField()
+	pub_from     = models.DateTimeField(null=True, default=None)
+	pub_to       = models.DateTimeField(null=True, default=None)
+
+	hash_md5     = models.CharField(max_length=100, null=True, default=None)
 
 	def __str__(self):
 		return self.title

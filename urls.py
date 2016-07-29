@@ -27,8 +27,10 @@ urlpatterns = [
 
 	url(r'^logs/$', project.views.logs),
 
-	url(r'^login/$', project.views.login_view),
+	url(r'^ajax/login/$', project.views.ajax_login),
 	url(r'^logout/$', project.views.logout_view),
-	url(r'^register/$', project.views.register),
+
+	url(r'^ajax/create-username/$', project.views.ajax_create_username),
+	url(r'^ajax/register/$', project.views.ajax_register),
 
 ]
