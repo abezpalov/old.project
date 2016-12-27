@@ -231,7 +231,7 @@ def ajaxSaveArticle(request):
 	if request.POST.get('article_intro').strip():
 		article.intro = request.POST.get('article_intro').strip()
 	else:
-		article.intro = request.POST.get('article_content').strip()[:42]
+		article.intro = request.POST.get('article_content').strip()
 
 	# description
 	if request.POST.get('article_description').strip():
